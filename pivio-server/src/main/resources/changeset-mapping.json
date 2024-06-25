@@ -1,0 +1,31 @@
+{
+  "changeset": {
+    "properties": {
+      "document": {
+        "type": "string"
+      },
+      "timestamp": {
+        "type": "date"
+      },
+      "order": {
+        "type": "long"
+      },
+      "fields": {
+        "type": "nested",
+        "include_in_all": true,
+        "properties": {
+          "path": {
+            "type": "string",
+            "analyzer": "simple"
+          },
+          "value": {
+            "type": "string"
+          },
+          "op": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

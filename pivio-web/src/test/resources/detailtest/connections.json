@@ -1,0 +1,67 @@
+[
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "REST API",
+          "service_name": "A-rest-service",
+          "protocol": "https",
+          "port": 8443,
+          "transport_protocol": "tcp"
+        }
+      ],
+      "depends_on": {
+        "internal": [
+          {
+            "short_name":"C",
+            "port":"8443"
+          },
+          {
+            "service_name":"B-rest-service"
+          }
+        ]
+      }
+    },
+    "short_name": "A",
+    "id": "A"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "REST API",
+          "service_name": "B-rest-service",
+          "protocol": "https",
+          "port": 8443,
+          "transport_protocol": "tcp"
+        }
+      ],
+      "depends_on": {
+        "internal": [
+          {
+            "short_name":"C",
+            "port":"8443"
+          }
+        ]
+      }
+    },
+    "short_name": "B",
+    "id": "B"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "REST API",
+          "service_name": "C-rest-service",
+          "protocol": "https",
+          "port": 8443,
+          "transport_protocol": "tcp"
+        }
+      ]
+    },
+    "short_name": "C",
+    "id": "C"
+  }
+
+]

@@ -1,0 +1,12 @@
+{
+  "types": [
+    {
+      "name": "java.util.ArrayList"
+    },
+    {
+      "name": "java.util.HashMap"
+    }
+  ],
+  "lambdaCapturingTypes": [],
+  "proxies": []
+}

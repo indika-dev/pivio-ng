@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout :: page">
+<head>
+    <title>Main</title>
+</head>
+<body>
+<div th:fragment="content">
+
+    <!--@thymesVar id="pivio" type="io.pivio.view.app.overview.detail.view.DocumentViewModel"-->
+
+    <div class="ui two column grid">
+        <div class="column">
+            <div class="ui  segment">
+                <!--GENERAL ===-->
+                <div class="ui teal top attached label">General</div>
+                <div class="ui  basic ribbon label">Description</div>
+
+                <h1 th:text="${pivio.document.name + ' ' +pivio.getShortName()}" class="ui header"></h1>
+
+                <p th:text="${pivio.document.description}"></p>
+
+                <div class="ui basic label">
+                    <i class="users icon"></i> Owner
+                    <a th:href="'/app/overview/list?field=owner&amp;value='+${pivio.document.owner}"
+                       th:text="${pivio.document.owner}"
+                       class="detail"></a>
+                </div>
+
+
+                <div class="ui basic label">
+                    Type
+                    <div class="detail" th:text="${pivio.document.type}"></div>
+                </div>
+
+                <div th:if="${pivio.document.status}" class="ui basic label">
+                    <i class="users icon"></i> Status
+                    <div class="detail" th:text="${pivio.document.status}"></div>
+                </div>
+
+                <div th:if="${pivio.document.contact}" class="ui basic label">
+                    <i class="users icon"></i> Contact
+                    <div th:text="${pivio.document.contact}" class="detail"></div>
+                </div>
+
+                <div th:if="${pivio.document.vcsroot}" class="ui basic label">
+                    <i class="file text outline icon"></i> Source
+                    <div class="detail" th:text="${pivio.document.vcsroot}"></div>
+                </div>
+
+                <div th:if="${pivio.document.context}">
+                    <div th:if="${pivio.document.context.belongs_to_bounded_context}" class="ui basic label">
+                        <i class="circle thin icon"></i> Context
+                        <div class="detail"><a
+                                th:href="'/app/overview/list?field=context.belongs_to_bounded_context&amp;value='+${pivio.document.context.belongs_to_bounded_context}"
+                                th:text="${pivio.document.context.belongs_to_bounded_context}"></a></div>
+                    </div>
+
+                    <div th:if="${pivio.document.context.visibility}" class="ui basic label">
+                        <i class="privacy thin icon"></i> Intended usage:
+                        <div class="detail"><a
+                                th:href="'/app/overview/list?field=context.visibility&amp;value='+${pivio.document.context.visibility}"
+                                th:text="${pivio.document.context.visibility}"></a></div>
+                    </div>
+                </div>
+
+                <div th:if="${pivio.document.product_context}" class="ui basic label">
+                    <i class="circle thin icon"></i> Product
+                    <div class="detail"><a
+                            th:href="'/app/overview/list?field=product_context&amp;value='+${pivio.document.product_context}"
+                            th:text="${pivio.document.product_context}">
+                    </a></div>
+                </div>
+
+
+                <div class="ui basic label">
+                    <i class="file thin icon"></i> Json
+                    <div class="detail"><a
+                            th:href="${config.jsApiAddress}+'/document/'+${pivio.document.id}"
+                            th:text="Link"></a></div>
+                </div>
+
+
+                <div th:each="tag : ${pivio.document.tags}">
+                    <a class="ui tag label" th:text="${tag}"></a>
+                </div>
+
+                <p/>
+
+                <p class="ui  basic ribbon label">Links</p>
+
+
+                <div th:if="${pivio.document.links}">
+                    <p>
+
+                    <div th:each="link : ${pivio.document.links}" class="ui basic label">
+                        <a th:href="${link.value}" th:text="${link.key}"></a>
+                    </div>
+                    </p>
+                </div>
+
+                <div class="ui tiny label ">
+                    <i class="upload icon"></i><span th:text="${pivio.document.lastUpload}"></span> &nbsp;
+                    <i class="write icon"></i> <span th:text="${pivio.document.lastUpdate}"></span>
+                </div>
+
+            </div>
+
+            <!--RUNTIME ===-->
+
+            <div th:if="${pivio.document.ofTypeService()}" class="ui segment">
+                <div class="ui blue top attached label">Runtime</div>
+
+                <div class="ui basic label"> RAM
+                    <div class="detail"><a th:text="${pivio.document.runtime.ram}"></a></div>
+                </div>
+                <div class="ui basic label"> CPU
+                    <div class="detail"><a th:text="${pivio.document.runtime.cpu}"></a></div>
+                </div>
+                <div class="ui basic label"> Disk
+                    <div class="detail"><a th:text="${pivio.document.runtime.disk}"></a></div>
+                </div>
+                <div class="ui basic label"> Host
+                    <div class="detail"><a th:text="${pivio.document.runtime.host_type}"></a></div>
+                </div>
+
+                <div class="ui basic label"> Network Zone
+                    <div class="detail"><a
+                            th:href="'/app/overview/list?field=runtime.network_zone&amp;value='+${pivio.document.runtime.network_zone}"
+                            th:text="${pivio.document.runtime.network_zone}"></a></div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- second column -->
+        <div class="column">
+
+            <!--SERVICES ===-->
+
+            <div th:if="${pivio.document.ofTypeService()}" class="ui segment">
+
+
+                <div class="ui orange top attached label">Service</div>
+
+                <p/>
+
+                <div class="ui ribbon left basic label"><i class="cube icon"></i>Provides</div>
+
+                <p/>
+
+                <div th:each="provides : ${pivio.service.provides}" class="ui card">
+                    <div class="content">
+
+                        <div class="header" th:text="${provides.description}"></div>
+                        <div class="meta">
+                            <span class="date" th:text="${provides.techInfo}"></span>
+                        </div>
+
+                        <p/>
+
+                        <div th:each="dns : ${provides.public_dns}">
+                            Public DNS:
+                            <div class="ui label" th:text="${dns}"></div>
+                        </div>
+
+                        <a th:href="'/app/overview/'+${dependentServices.id}" class="ui orange label"
+                           th:each="dependentServices : ${provides.dependentServices}"
+                           th:text="${dependentServices.short_name}">-</a>
+
+                    </div>
+                    <div class="extra content">
+                        Service name:
+                        <div class="ui label" th:text="${provides.service_name}"></div>
+
+                    </div>
+                </div>
+
+                <div th:if="${pivio.document.service.depends_on}">
+                    <div class="ui ribbon left basic label"><i class="arrow left icon"></i>Depends on</div>
+                    <p/>
+
+                    <h5 class="header">
+                        Internal
+                    </h5>
+
+                    <div class="ui divided" th:if="${pivio.service.internalServiceDependencies}">
+                        <span th:each="internalDependency : ${pivio.service.internalServiceDependencies}">
+                        <a th:if="${internalDependency.hasServiceId()}" class="blue ui label"
+                           th:href="'/app/overview/'+${internalDependency.serviceId}"
+                           th:text="${internalDependency.serviceDisplayName}"></a>
+                        <span th:if="${!internalDependency.hasServiceId()}" class="gray ui label"
+                              th:text="${internalDependency.serviceDisplayName}"></span>
+                        </span>
+                    </div>
+
+                    <h5 th:if="${not #lists.isEmpty(pivio.document.service.depends_on.external)}" class="header">
+                        Public External
+                    </h5>
+
+                    <div th:if="${pivio.document.service.depends_on}" class="ui card"
+                         th:each="connection : ${pivio.document.service.depends_on.external}">
+                        <div class="content">
+                            <div class="header" th:text="${connection.target}"></div>
+                            <div class="meta" th:text="${connection.via}"></div>
+                            <p th:text="${connection.why}"></p>
+
+                            <div class="ui basic label" th:text="${connection.transport_protocol}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Software Dependencies -->
+
+            <div th:if="${pivio.document.software_dependencies}" class="ui segment">
+                <div class="ui red top attached label">Software Dependencies</div>
+                <div class="ui ribbon left basic label">In Use</div>
+                <ul class="ui list" th:each="dep : ${pivio.sortedDependencies}">
+                    <li>
+                        <span th:text="${dep.name +' : '+ dep.version+' '}"></span>
+                        <!--<a th:href="'/app/overview/list?field=software_dependencies.name&amp;value='+${dep.name}"-->
+                        <!--th:text="${dep.name +' : '+ dep.version+' '}"></a>-->
+                    </li>
+                </ul>
+
+                <p/>
+
+                <div class="ui ribbon left basic label">Licenses</div>
+                <ul class="ui list" th:each="license : ${pivio.consolidatedLicenses}">
+                    <li>
+                        <span th:text="${license}"></span>
+                        <!--<a th:href="'/app/overview/list?field=software_dependencies.licenses.name&amp;value='+${license}"-->
+                        <!--th:text="${license}"></a>-->
+                    </li>
+
+                </ul>
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="ui one column grid">
+        <h4 class="ui horizontal divider header">
+            Actions
+        </h4>
+        <button class="negative ui right floated button">
+            <i class="ban icon"></i>
+            <a th:href="'/app/overview/'+${pivio.document.id}+'/delete'" rel="nofollow">Delete Document</a>
+        </button>
+    </div>
+
+</div>
+</body>
+</html>

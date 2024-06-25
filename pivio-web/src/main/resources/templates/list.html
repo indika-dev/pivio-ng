@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout :: page">
+<head>
+    <title>Main</title>
+</head>
+<body>
+<div th:fragment="content">
+
+    <script src="/js/list.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var field = /*[[${field}]]*/ '';
+        var value = /*[[${value}]]*/ '';
+        /*]]>*/
+        list(field, value);
+    </script>
+
+
+
+    <script id="list-template" type="text/x-handlebars-template">
+
+        <h4 class="ui horizontal divider header">
+            {{pivioField}} : {{pivioValue}}
+        </h4>
+
+
+        {{#each this}}
+        <div class="ui basic label"><a href="/app/overview/{{id}}">{{name}}</a></div>
+        {{/each}}
+    </script>
+
+
+
+    <div id="list">
+
+    </div>
+
+</div>
+
+</body>
+</html>

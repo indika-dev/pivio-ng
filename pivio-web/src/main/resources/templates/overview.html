@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout :: page">
+<head>
+    <title>Main</title>
+</head>
+<body>
+<div th:fragment="content">
+
+    <script src="/js/overview.js"></script>
+
+    <div class="ui container centered">
+        <div class="ui icon input">
+            <input id="searchbox" type="text" size="30" autofocus="autofocus" placeholder="Quick Search..."/>
+            <i class="search icon"></i>
+        </div>
+    </div>
+    <!--@thymesVar id="pivioOverview" type="java.util.List"-->
+    <!--@thymesVar id="card" type="io.pivio.view.app.overview.list.OverviewModel"-->
+
+    <h4 id="artifactsheader" class="ui horizontal divider header">
+        Matching Artifacts
+    </h4>
+
+    <div id="cards" class="ui cards container centered grey">
+
+        <a th:each="card : ${pivioOverview}" class="ui card"
+           data-th-attr="data-meta=${card.meta}" th:href="'/app/overview/' + ${card.id}">
+            <div class="content">
+                <div th:if="${card.short_name}" th:text="${card.short_name}" th:class="'right floated ui button tiny '+${card.getCardColor()}"></div>
+                <div class="header" th:text="${card.name}"></div>
+                <div class="meta" th:text="${card.owner}"></div>
+                <div class="description" th:text="${card.description}"></div>
+            </div>
+
+            <div class="extra content">
+                <div th:if="${card.context}" class="ui small label "> &nbsp;
+                    <i class="circle thin icon"></i> <span th:text="${card.context.belongs_to_bounded_context}"></span>
+                </div>
+
+                <div class="ui small label ">
+                    <i class="upload icon"></i> <span th:text="${card.getPrettyUploadDate()}"></span> &nbsp;
+                    <i class="write icon"></i> <span th:text="${card.getPrettyUpdateDate()}"></span>
+                </div>
+
+            </div>
+
+
+        </a>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+package io.pivio.server.elasticsearch;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.opensearch.client.opensearch.OpenSearchClient;
+import org.opensearch.client.opensearch._types.FieldSort;
+import org.opensearch.client.opensearch._types.OpenSearchException;
+import org.opensearch.client.opensearch._types.SortOptions;
+import org.opensearch.client.opensearch._types.SortOrder;
+import org.opensearch.client.opensearch._types.Time;
+import org.opensearch.client.opensearch._types.query_dsl.Query;
+import org.opensearch.client.opensearch.core.GetResponse;
+import org.opensearch.client.opensearch.core.SearchRequest;
+import org.opensearch.client.opensearch.core.SearchResponse;
+import org.opensearch.client.opensearch.core.pit.CreatePitResponse;
+import org.opensearch.client.opensearch.core.search.Pit;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
+@Component
+@NoArgsConstructor
+@AllArgsConstructor
+public class ElasticsearchQueryHelper {
+
+  @Autowired
+  private OpenSearchClient client;
+
+  @Autowired
+  public ObjectMapper objectMapper;
+
+  @Value("#{pivioIndex}")
+  private String pivioIndex;
+
+  @Value("#{changesetIndex}")
+  private String changesetIndex;
+
+  private final SortOptions sortTimestampDesc = new SortOptions.Builder()
+      .field(new FieldSort.Builder().field("timestamp").order(SortOrder.Desc).build()).build();
+  private final Time stdScrollTime = Time.of(t -> t.offset(60000));
+
+  public boolean isPivioPresent(String id) {
+    try {
+      GetResponse<JsonNode> response =
+          client.get(g -> g.index("steckbrief").id(id), JsonNode.class);
+      return response.source() != null;
+    } catch (OpenSearchException | IOException e) {
+      logger.error("can't query OpnSearchServer due to " + e.getMessage(), e);
+    }
+    return false;
+  }
+
+  public Optional<JsonNode> isDocumentPresent(String id) {
+    SearchRequest searchRequest = SearchRequest
+        .of(s -> s.index(changesetIndex).from(0).size(1).query(q -> q.ids(ids -> ids.values(id))));
+    try {
+      SearchResponse<JsonNode> response = client.search(searchRequest, JsonNode.class);
+      return Optional
+          .ofNullable(response.documents().isEmpty() ? null : response.documents().getFirst());
+    } catch (OpenSearchException | IOException e) {
+      logger.error("can't query OpenSearchServer due to " + e.getMessage(), e);
+    }
+    return Optional.empty();
+  }
+
+  public Optional<JsonNode> isChangesetPresent(String id) {
+    SearchRequest searchRequest = SearchRequest
+        .of(s -> s.index(changesetIndex).from(0).size(1).query(q -> q.ids(ids -> ids.values(id))));
+    try {
+      SearchResponse<JsonNode> response = client.search(searchRequest, JsonNode.class);
+      return Optional
+          .ofNullable(response.documents().isEmpty() ? null : response.documents().getFirst());
+    } catch (OpenSearchException | IOException e) {
+      logger.error("can't query OpnSearchServer due to " + e.getMessage(), e);
+    }
+    return Optional.empty();
+  }
+
+  public ArrayNode retrieveAllDocuments(Query searchQuery) throws IOException {
+    CreatePitResponse createPitResponse =
+        client.createPit(pit -> pit.keepAlive(stdScrollTime).targetIndexes(pivioIndex));
+    ArrayNode allDocuments = objectMapper.createArrayNode();
+    List<JsonNode> currentResultPage = new ArrayList<>(100);
+    Pit queryPit = Pit.of(builder -> builder.id(createPitResponse.pitId()));
+    SearchResponse<JsonNode> searchResponse = client.search(
+        request -> request.size(100).query(searchQuery).sort(sortTimestampDesc).pit(queryPit),
+        JsonNode.class);
+    while (!(currentResultPage = searchResponse.documents()).isEmpty()) {
+      allDocuments.addAll(currentResultPage);
+      String searchAfterParam = currentResultPage.getLast().get("timestamp").textValue();
+      searchResponse = client.search(request -> request.size(100).query(searchQuery)
+          .sort(sortTimestampDesc).pit(queryPit).searchAfter(searchAfterParam), JsonNode.class);
+    }
+    client.deletePit(request -> request.pitId(List.of(createPitResponse.pitId())));
+    return allDocuments;
+  }
+
+  public ArrayNode retrieveAllDocuments() throws IOException {
+    return retrieveAllDocuments(new Query.Builder().matchAll(t -> t).build());
+  }
+
+  public ArrayNode retrieveAllChangesets(Query searchQuery) throws IOException {
+    CreatePitResponse createPitResponse =
+        client.createPit(pit -> pit.keepAlive(stdScrollTime).targetIndexes(changesetIndex));
+    ArrayNode allDocuments = objectMapper.createArrayNode();
+    List<JsonNode> currentResultPage = new ArrayList<>(100);
+    Pit queryPit = Pit.of(builder -> builder.id(createPitResponse.pitId()));
+    SearchResponse<JsonNode> searchResponse = client.search(
+        request -> request.size(100).query(searchQuery).sort(sortTimestampDesc).pit(queryPit),
+        JsonNode.class);
+    while (!(currentResultPage = searchResponse.documents()).isEmpty()) {
+      allDocuments.addAll(currentResultPage);
+      String searchAfterParam = currentResultPage.getLast().get("timestamp").textValue();
+      searchResponse = client.search(request -> request.size(100).query(searchQuery)
+          .sort(sortTimestampDesc).pit(queryPit).searchAfter(searchAfterParam), JsonNode.class);
+    }
+    client.deletePit(request -> request.pitId(List.of(createPitResponse.pitId())));
+    return allDocuments;
+  }
+
+  public ArrayNode retrieveAllChangesets() throws IOException {
+    return retrieveAllChangesets(new Query.Builder().matchAll(t -> t).build());
+  }
+}

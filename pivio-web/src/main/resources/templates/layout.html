@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" th:fragment="page" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pivio View</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/Semantic-UI/2.1.8/semantic.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/pivio.css"/>
+    <script src="/webjars/jquery/2.2.1/jquery.min.js"></script>
+    <script src="/webjars/handlebars/4.0.2/handlebars.min.js"></script>
+    <script src="/webjars/Semantic-UI/2.1.8/semantic.min.js"></script>
+</head>
+<body>
+
+<script language="javascript">
+    $(document).ready(function () {
+        $('.ui.accordion').accordion();
+        console.log("Accordion.");
+    });
+</script>
+
+<div class="ui container">
+    <div id="main_menu" class="ui pointing   menu">
+        <a href="/" class="item">
+            <div class="ui animated  button" tabindex="0">
+                <div class="visible content">pivio</div>
+                <div class="hidden content">
+                    <i class="heart icon"></i>
+                </div>
+            </div>
+        </a>
+
+        <a class="blue item " th:each="page: ${config.pages}" th:id="${page.id}" th:href="${page.url}"
+           th:text="${page.description}">&nbsp;</a>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            var pageId = /*[[${pageId}]]*/ '';
+            var apiserver = /*[[${config.apiAddress}]]*/ '';
+            var apiserver_js = /*[[${config.jsApiAddress}]]*/ '';
+            /*]]>*/
+            $("#" + pageId).addClass("active");
+        </script>
+
+    </div>
+
+    <div th:if="${pivioMessage}" class="ui success message">
+        <div th:text="${pivioMessage}" class="header"></div>
+    </div>
+
+    <div th:if="${pivioErrorMessage}" class="ui negative message">
+        <div th:text="${pivioErrorMessage}" class="header"></div>
+    </div>
+
+    <div class="ui segment" th:include="this :: content">
+
+    </div>
+</div>
+
+</body>
+</html>

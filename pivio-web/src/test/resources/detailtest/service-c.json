@@ -1,0 +1,11 @@
+{
+  "provides": [
+    {
+      "description": "REST API",
+      "service_name": "C-rest-service",
+      "protocol": "https",
+      "port": 8443,
+      "transport_protocol": "tcp"
+    }
+  ]
+}

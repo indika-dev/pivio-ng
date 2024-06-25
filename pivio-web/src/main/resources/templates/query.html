@@ -1,0 +1,48 @@
+    <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout :: page">
+<head>
+    <title>Feed</title>
+</head>
+<body>
+<div th:fragment="content">
+    <script src="/js/query.js"></script>
+
+    <form class="ui form">
+        <div class="field">
+            <label class=" ui label">Query (<a href="https://www.elastic.co/guide/en/elasticsearch/reference/2.4/query-dsl.html">Query DSL Help</a>)</label>
+            <textarea id="query" placeholder="{'match':{'short_name':'AAA'}}">{
+    "match": {
+        "short_name": "AAA"
+    }
+}</textarea>
+        </div>
+        <div class="field">
+            <label class=" ui label">Fields</label>
+            <textarea id="fields" rows="1" placeholder="name,description"></textarea>
+        </div>
+    </form>
+
+    <h4 class="ui horizontal divider header"></h4>
+
+    <div>
+        <button id="submit" class="ui button ">Search</button>
+    </div>
+
+    <div id="resultarea" style="margin-top: 20px">
+
+        <div class="ui green label">URL for Query</div>
+        <pre id="serverquery">
+
+        </pre>
+
+        <div class="ui green label">Result</div>
+        <pre id="result">
+
+        </pre>
+    </div>
+
+</div>
+</body>
+</html>

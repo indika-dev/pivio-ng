@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout :: page">
+<head>
+    <title>Main</title>
+</head>
+<body>
+<div th:fragment="content">
+
+    <style>
+
+        .node {
+            font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+            fill: #bbb;
+        }
+
+        .node:hover {
+            fill: #000;
+        }
+
+        .link {
+            stroke: steelblue;
+            stroke-opacity: .4;
+            fill: none;
+            pointer-events: none;
+        }
+
+        .node:hover,
+        .node--source,
+        .node--target {
+            font-weight: 700;
+        }
+
+        .node--source {
+            fill: #2ca02c;
+        }
+
+        .node--target {
+            fill: #d62728;
+        }
+
+        .link--source,
+        .link--target {
+            stroke-opacity: 1;
+            stroke-width: 2px;
+        }
+
+        .link--source {
+            stroke: #d62728;
+        }
+
+        .link--target {
+            stroke: #2ca02c;
+        }
+
+        #graph {
+            width: 800px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    </style>
+
+    <script src="/webjars/d3js/3.5.12/d3.min.js"></script>
+    <script src="/js/servicegraph.js"></script>
+
+    <div id="graph">
+
+    </div>
+    <script id="context-template" type="text/x-handlebars-template">
+        {{#each this}}
+        <div class="ui blue card">
+            <div class="content">
+                <h3 class="ui blue header">{{name}}</h3>
+
+                <ul class="ui top aligned">
+                    {{#each services}}
+                    <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+        {{/each}}
+
+
+    </script>
+
+    <h4 class="ui horizontal divider header">
+       Bounded Contexts
+    </h4>
+
+
+    <div id="context" class="ui cards container centered grey">
+
+    </div>
+
+</div>
+</body>
+</html>

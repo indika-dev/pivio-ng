@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" type="text/css" href="/webjars/Semantic-UI/2.1.8/semantic.min.css"/>
+<link rel="stylesheet" type="text/css" href="/css/pivio.css"/>
+<head>
+    <title>Info</title>
+</head>
+<body>
+<div class="ui container">
+
+    <h1 class="ui header">About Pivio</h1>
+
+    <table class="ui celled table">
+        <tbody>
+        <tr>
+            <td>
+                git hash
+            </td>
+            <td th:text="${githash}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+</body>
+</html>

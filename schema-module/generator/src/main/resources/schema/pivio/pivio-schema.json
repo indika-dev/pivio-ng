@@ -1,0 +1,345 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pivio-schema.json",
+  "title": "PivioObject",
+  "type": "object",
+  "properties": {
+    "data_format_version": {
+      "type": "string",
+      "default": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "$comment": "id ist in der Regel eine UUID, aber dies wird von Pivio nicht erzwungen. \"format\": \"uuid\" "
+    },
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "service",
+        "library",
+        "mobile_app"
+      ],
+      "default": "service"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "vcsroot": {
+      "type": "string"
+    },
+    "contact": {
+      "type": "string"
+    },
+    "short_name": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "homepage": {
+          "type": "string"
+        },
+        "buildchain": {
+          "type": "string"
+        },
+        "api_docs": {
+          "type": "string"
+        }
+      }
+    },
+    "service": {
+      "type": "object",
+      "properties": {
+        "provides": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "service_name": {
+                "type": "string"
+              },
+              "protocol": {
+                "type": "string",
+                "anyOf": [
+                  {
+                    "enum": [
+                      "http",
+                      "https",
+                      "ftp",
+                      "sftp",
+                      "ftps",
+                      "amqp",
+                      "mqtt",
+                      "t3",
+                      "t3s"
+                    ]
+                  },
+                  {
+                    "$comment": "dies ist für den Fall von Migrationen mit neuen Werten gedacht oder auch wenn eigene Werte eingetragen wurden",
+                    "pattern": "."
+                  }
+                ],
+                "default": "https"
+              },
+              "port": {
+                "$ref": "#/$defs/network-port",
+                "default": 443
+              },
+              "public_dns": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "transport_protocol": {
+                "$ref": "#/$defs/transport-protocols",
+                "default": "tcp"
+              }
+            },
+            "required": [
+              "service_name",
+              "description"
+            ]
+          }
+        },
+        "depends_on": {
+          "type": "object",
+          "properties": {
+            "internal": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "service_name": {
+                    "type": "string"
+                  },
+                  "short_name": {
+                    "type": "string"
+                  },
+                  "port": {
+                    "$ref": "#/$defs/network-port"
+                  },
+                  "why": {
+                    "type": "string"
+                  }
+                },
+                "oneOf": [
+                  {
+                    "required": [
+                      "service_name"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "short_name",
+                      "port"
+                    ]
+                  }
+                ]
+              }
+            },
+            "external": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "target": {
+                    "type": "string"
+                  },
+                  "transport_protocol": {
+                    "$ref": "#/$defs/transport-protocols"
+                  },
+                  "why": {
+                    "type": "string"
+                  },
+                  "via": {
+                    "type": "string"
+                  },
+                  "required": [
+                    "target"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "belongs_to_bounded_context": {
+          "type": "string"
+        },
+        "visibility": {
+          "enum": [
+            "private",
+            "public"
+          ]
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "cpu": {
+          "$ref": "#/$defs/t-shirt-sizes"
+        },
+        "ram": {
+          "$ref": "#/$defs/t-shirt-sizes"
+        },
+        "disk": {
+          "$ref": "#/$defs/t-shirt-sizes"
+        },
+        "host_type": {
+          "type": "string",
+          "anyOf": [
+            {
+              "enum": [
+                "k8s",
+                "Docker",
+                "Weblogic"
+              ]
+            },
+            {
+              "$comment": "dies ist für den Fall von Migrationen mit neuen Werten gedacht oder auch wenn eigene Werte eingetragen wurden",
+              "pattern": "."
+            }
+          ]
+        },
+        "network_zone": {
+          "type": "string",
+          "anyOf": [
+            {
+              "enum": [
+                "Public Cloud",
+                "Private Cloud",
+                "RHVM"
+              ],
+              "$deprecated": true
+            },
+            {
+              "$comment": "dies ist für den Fall von Migrationen mit neuen Werten gedacht oder auch wenn eigene Werte eingetragen wurden",
+              "pattern": "."
+            }
+          ]
+        },
+        "environment": {
+          "enum": [
+            "test",
+            "staging",
+            "production"
+          ],
+          "default": "production"
+        }
+      }
+    },
+    "software_dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "licenses": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "enum": [
+                    "Commercial License",
+                    "GPL-2.0",
+                    "GPL-3.0",
+                    "BSD-3-Clause",
+                    "BSD-2-Clause",
+                    "LGPL-2.0",
+                    "LGPL-2.1",
+                    "LGPL-3.0",
+                    "MIT",
+                    "MPL-2.0",
+                    "CDDL-1.0",
+                    "EPL-2.0"
+                  ]
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": "true",
+      "$comment": "dies wird vom Pivioserver gemanaged"
+    },
+    "lastUpload": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": "true",
+      "$comment": "dies wird vom Pivioserver gemanaged"
+    },
+    "lastUpdate": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": "true",
+      "$comment": "dies wird vom Pivioserver gemanaged"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "type",
+    "owner",
+    "description"
+  ],
+  "$defs": {
+    "network-port": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65536
+    },
+    "transport-protocols": {
+      "enum": [
+        "tcp",
+        "jms",
+        "udp",
+        "atp",
+        "sctp",
+        "quic"
+      ]
+    },
+    "t-shirt-sizes": {
+      "enum": [
+        "XL",
+        "L",
+        "S",
+        "XS",
+        "UNKNOWN"
+      ]
+    }
+  }
+}

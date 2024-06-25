@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      th:include="layout :: page">
+<head>
+    <title>Feed</title>
+</head>
+<body>
+<div th:fragment="content">
+
+    <!--/*@thymesVar id="changeset" type="java.util.List"*/-->
+    <div th:each="feedModel: ${changeset}" class="ui card" style="width: 100%">
+        <div class="content" style="width: 100%">
+            <!--@thymesVar id="feedModel" type="io.pivio.view.app.feed.FeedModel"-->
+            <a th:href="'/app/overview/'+${feedModel.feedItem.document}" class="ui blue header"
+               th:text="${feedModel.short_name}"></a>
+            <div class="meta">
+                <span class="right floated time" th:text="${feedModel.getPrettyDate()}"></span>
+            </div>
+
+            <div class="content description" th:each="uniquePathEntry : ${feedModel.feedItem.getUniquePath()}">
+                <div th:if="${uniquePathEntry.value.size()} &lt; 6" th:each="changesList : ${uniquePathEntry.value}">
+                    <div th:each="change : ${changesList}">
+                        <span class="ui grey label" th:text="${change.path}"></span>
+                        <span th:text="${change.value}"></span>
+                    </div>
+                </div>
+
+
+                <div th:if="${uniquePathEntry.value.size()} &gt; 5">
+
+                    <div class="ui accordion">
+                        <div class="title">
+                            <i class="dropdown icon"></i>
+                            <span class="ui grey "
+                                  th:text="${uniquePathEntry.key} + ' (' + ${uniquePathEntry.value.size()}+ ')'"></span>
+                        </div>
+                        <div class="content">
+                            <div th:each="changesList : ${uniquePathEntry.value}">
+                                <div th:each="change : ${changesList}">
+                                    <span class="ui grey label" th:text="${change.path}"></span>
+                                    <span th:text="${change.value}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

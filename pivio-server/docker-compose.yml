@@ -1,0 +1,18 @@
+services:
+  pivio:
+    build: .
+    ports:
+      - "9123:9123"
+    depends_on:
+      - elasticsearch
+
+  elasticsearch:
+    image: docker.io/opensearchproject/opensearch:2.14.0
+    ports:
+      - 9200:9200
+      - 9600:9600
+    environment:
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=öasjdfzxdk_I34
+      - discovery.type=single-node
+    command:
+      ["/bin/sh", "-c", "/usr/share/opensearch/opensearch-docker-entrypoint.sh"]

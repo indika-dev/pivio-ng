@@ -1,0 +1,363 @@
+[
+  {
+    "name": "java.lang.Throwable",
+    "methods": [
+      {
+        "name": "addSuppressed",
+        "parameterTypes": ["java.lang.Throwable"]
+      }
+    ]
+  },
+  {
+    "name": "java.lang.reflect.Executable",
+    "methods": [
+      {
+        "name": "getParameters",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "java.lang.reflect.Method"
+  },
+  {
+    "name": "java.lang.reflect.Parameter",
+    "methods": [
+      {
+        "name": "getName",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.jsonpatch.Operation",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.jsonpatch.Operation$Op",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "fromValue",
+        "parameterTypes": ["java.lang.String"]
+      },
+      {
+        "name": "value",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.Context",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.Context$Visibility",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "fromValue",
+        "parameterTypes": ["java.lang.String"]
+      },
+      {
+        "name": "value",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.DependsOn",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.External",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.Internal",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.License",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.License$Name",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.Links",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.PivioObject",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.PivioObject$Type",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "fromValue",
+        "parameterTypes": ["java.lang.String"]
+      },
+      {
+        "name": "value",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.Provide",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.Provide$TransportProtocols",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "fromValue",
+        "parameterTypes": ["java.lang.String"]
+      },
+      {
+        "name": "value",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.Runtime",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.Runtime$Environment",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "fromValue",
+        "parameterTypes": ["java.lang.String"]
+      },
+      {
+        "name": "value",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.Runtime$TShirtSizes",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "fromValue",
+        "parameterTypes": ["java.lang.String"]
+      },
+      {
+        "name": "value",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.Service",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  },
+  {
+    "name": "io.pivio.schema.generated.pivio.SoftwareDependency",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getAdditionalProperties",
+        "parameterTypes": []
+      },
+      {
+        "name": "setAdditionalProperty",
+        "parameterTypes": ["java.lang.String", "java.lang.Object"]
+      }
+    ]
+  }
+]

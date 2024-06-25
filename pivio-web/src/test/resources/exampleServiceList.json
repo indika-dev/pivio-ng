@@ -1,0 +1,390 @@
+[
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "SSL Access to the conference db",
+          "service_name": "conference-db",
+          "protocol": "mysql",
+          "port": 3307,
+          "transport_protocol": "tcp"
+        }
+      ]
+    },
+    "short_name": "CNF-DB",
+    "id": "confdb"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "Chooses a location given a specifc data for a conference.",
+          "service_name": "location-service",
+          "protocol": "https",
+          "port": 9443,
+          "transport_protocol": "tcp"
+        }
+      ],
+      "depends_on": {
+        "internal": [
+          {
+            "service_name": "location-db"
+          },
+          {
+            "service_name": "rest-conference-service"
+          }
+        ],
+        "external": [
+          {
+            "target": "https://superlocations.me:443",
+            "transport_protocol": "tcp",
+            "why": "Get locations for conferences."
+          }
+        ]
+      }
+    },
+    "short_name": "LCTN",
+    "id": "location"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "SSL Access to the program db",
+          "service_name": "program-db",
+          "protocol": "mysql",
+          "port": 3307,
+          "transport_protocol": "tcp"
+        }
+      ]
+    },
+    "short_name": "CNF-PRGRM-DB",
+    "id": "programdb"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "SSL Access to the cfp db",
+          "service_name": "submission-db",
+          "protocol": "mysql",
+          "port": 3307,
+          "transport_protocol": "tcp"
+        }
+      ]
+    },
+    "short_name": "CFP-SUBMISSION-DB",
+    "id": "cfpsubmissiondb"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "SSL Access to the user db",
+          "service_name": "user-db",
+          "protocol": "mysql",
+          "port": 3307,
+          "transport_protocol": "tcp"
+        }
+      ]
+    },
+    "short_name": "CNF-USR-DB",
+    "id": "userdb"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "Web Display of the Announcement",
+          "service_name": "web-announcement-service",
+          "protocol": "https",
+          "port": 80,
+          "transport_protocol": "tcp",
+          "public_dns": [
+            "cfp.superconf.io"
+          ]
+        },
+        {
+          "description": "REST API for updating CfP data",
+          "service_name": "rest-announcement-service",
+          "protocol": "https",
+          "port": 9449,
+          "transport_protocol": "tcp"
+        }
+      ],
+      "depends_on": {
+        "internal": [
+          {
+            "short_name": "user-service"
+          },
+          {
+            "short_name": "email-announcement-service"
+          }
+        ]
+      }
+    },
+    "short_name": "CFPA",
+    "id": "CFPAnnouncement"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "REST API for EMailing the announcement",
+          "service_name": "email-announcement-service",
+          "protocol": "https",
+          "port": 9443,
+          "transport_protocol": "tcp",
+          "public_dns": [
+            "mx.superconf.io"
+          ]
+        }
+      ]
+    },
+    "short_name": "CFPE",
+    "id": "CFPAEMail"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "Logs in a user",
+          "service_name": "login-service",
+          "protocol": "https",
+          "port": 443,
+          "transport_protocol": "tcp",
+          "public_dns": [
+            "login.superconf.io"
+          ]
+        }
+      ],
+      "depends_on": {
+        "internal": [
+          {
+            "service_name": "user-service",
+            "why": "need to figure out if this is a valid user."
+          }
+        ]
+      }
+    },
+    "short_name": "CNF-LGN",
+    "id": "login"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "Registers a user",
+          "service_name": "registration-service",
+          "protocol": "https",
+          "port": 443,
+          "transport_protocol": "tcp",
+          "public_dns": [
+            "registration.superconf.io"
+          ]
+        }
+      ],
+      "depends_on": {
+        "internal": [
+          {
+            "service_name": "user-service"
+          }
+        ]
+      }
+    },
+    "short_name": "CNF-REG",
+    "id": "reg"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "Generates the program of the conference.",
+          "service_name": "program-generation-service",
+          "protocol": "https",
+          "port": 9443,
+          "transport_protocol": "tcp"
+        },
+        {
+          "description": "Shows the conference program",
+          "service_name": "program-service",
+          "protocol": "https",
+          "port": 443,
+          "transport_protocol": "tcp",
+          "public_dns": [
+            "program.superconf.io"
+          ]
+        }
+      ],
+      "depends_on": {
+        "internal": [
+          {
+            "service_name": "program-db"
+          },
+          {
+            "service_name": "location-service"
+          },
+          {
+            "service_name": "location-booking-service"
+          },
+          {
+            "service_name": "conference-service"
+          }
+        ],
+        "external": [
+          {
+            "target": "https://booking.superlocations.me:443",
+            "transport_protocol": "tcp",
+            "why": "Book locations for conferences."
+          }
+        ]
+      }
+    },
+    "short_name": "CNF-USR",
+    "id": "prg-gen"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "SSL Access to the voting db",
+          "service_name": "voting-db",
+          "protocol": "mysql",
+          "port": 3307,
+          "transport_protocol": "tcp"
+        }
+      ]
+    },
+    "short_name": "CNF-VTNG-DB",
+    "id": "votingdb"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "A User can submit a CfP",
+          "service_name": "submission-service",
+          "protocol": "https",
+          "port": 443,
+          "transport_protocol": "tcp",
+          "public_dns": [
+            "submission.superconf.io"
+          ]
+        },
+        {
+          "description": "REST interface to the cfp submission",
+          "service_name": "rest-submission-service",
+          "protocol": "https",
+          "port": 9443,
+          "transport_protocol": "tcp"
+        }
+      ],
+      "depends_on": {
+        "internal": [
+          {
+            "service_name": "submission-db"
+          },
+          {
+            "service_name": "rest-conference-service"
+          }
+        ]
+      }
+    },
+    "short_name": "cfp-submission",
+    "id": "cfp-submission"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "The program committee can vote for their favorite submissions.",
+          "service_name": "voting-service",
+          "protocol": "https",
+          "port": 443,
+          "transport_protocol": "tcp",
+          "public_dns": [
+            "voting.superconf.io"
+          ]
+        }
+      ],
+      "depends_on": {
+        "internal": [
+          {
+            "service_name": "rest-submission-service"
+          },
+          {
+            "service_name": "voting-db"
+          },
+          {
+            "service_name": "program-generation-service"
+          },
+          {
+            "service_name": "rest-conference-service"
+          }
+        ]
+      }
+    },
+    "short_name": "cfp-eval",
+    "id": "cfp-voting"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "Access to all user information",
+          "service_name": "user-service",
+          "protocol": "https",
+          "port": 9443,
+          "transport_protocol": "tcp"
+        }
+      ],
+      "depends_on": {
+        "internal": [
+          {
+            "service_name": "user-db",
+            "why": "Need to talk to my database."
+          }
+        ]
+      }
+    },
+    "short_name": "CNF-USR",
+    "id": "user"
+  },
+  {
+    "service": {
+      "provides": [
+        {
+          "description": "Create, update a conference",
+          "service_name": "conference-service",
+          "protocol": "https",
+          "port": 443,
+          "transport_protocol": "tcp",
+          "public_dns": [
+            "conference.superconf.io"
+          ]
+        },
+        {
+          "description": "REST interface for Create, update a conference",
+          "service_name": "rest-conference-service",
+          "protocol": "https",
+          "port": 9443,
+          "transport_protocol": "tcp"
+        }
+      ],
+      "depends_on": {
+        "internal": [
+          {
+            "service_name": "conference-db",
+            "why": "This is my database."
+          },
+          {
+            "service_name": "rest-announcement-service",
+            "why": "Need to announce conferences."
+          }
+        ]
+      }
+    },
+    "short_name": "CONF",
+    "id": "rconf"
+  }
+]

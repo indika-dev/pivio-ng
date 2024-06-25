@@ -1,0 +1,13 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\Qschema/pivio/pivio-schema.json\\E"
+      },
+      {
+        "pattern": "\\Qschema/jsonpatch-schema.json\\E"
+      }
+    ]
+  },
+  "bundles": []
+}

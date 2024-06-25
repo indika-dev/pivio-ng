@@ -1,0 +1,81 @@
+{
+  "owner": "Team Goldfinger",
+  "vcs": "git://git.vcs.local/UBP",
+  "description": "Prints all kinds of things. Now with 3D printing support.",
+  "runtime": {
+    "disk": "XL",
+    "cpu": "L",
+    "host_type": "VM",
+    "ram": "S"
+  },
+  "type": "service",
+  "tags": [
+    "Architecture"
+  ],
+  "network": {
+    "network_zone": "BACKEND"
+  },
+  "service": {
+    "depends_on": {
+      "internal": [
+        {
+          "service_name":"print-service"
+        },
+        {
+          "service_name":"gateway-service"
+        }
+      ],
+      "external": [
+        {
+          "why": "Need to sync data with it.",
+          "transport_protocol": "tcp",
+          "target": "https://api.superdealz.me:443",
+          "via": "proxy-service"
+        },
+        {
+          "why": "Get the latest Dealz.",
+          "transport_protocol": "tcp",
+          "target": "mqtt://192.xxx.xxx.xxx:5028"
+        }
+      ]
+    },
+    "provides": [
+      {
+        "protocol": "https",
+        "port": "8443",
+        "service_name": "uber-bill-print-service",
+        "description": "REST API",
+        "public_dns": [
+          "api.demo-company.com"
+        ],
+        "transport_protocol": "tcp"
+      },
+      {
+        "protocol": "http",
+        "port": "80",
+        "service_name": "print-service",
+        "description": "SOAP API (legacy)",
+        "public_dns": [
+          "soap.demo-company.io"
+        ],
+        "transport_protocol": "tcp"
+      }
+    ]
+  },
+  "contact": "Auric Goldfinger",
+  "name": "Next Generation Print Service",
+  "context": {
+    "visibility": "private",
+    "belongs_to_bounded_context": "Delivery"
+  },
+  "short_name": "NGPS",
+  "links": {
+    "api_docs": "http://docs.local/ubp-api",
+    "buildchain": "http://ci.local/ubp",
+    "homepage": "http://wiki.local/ubp"
+  },
+  "id": "next-generation-print-2342-2413-9189-1990",
+  "created": "2016-03-15T20:57:10.092+01:00",
+  "lastUpdate": "2016-03-15T20:57:10.092+01:00",
+  "lastUpload": "2016-03-15T20:57:10.092+01:00"
+}

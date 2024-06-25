@@ -1,0 +1,76 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'org.springframework.boot' version '2.6.1'
+    id "org.sonarqube" version "3.3"
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+task preBuild {
+    doLast {
+        println 'Generating version number from git.'
+        new File("build/resources/main/VERSION").withWriter { out ->
+            out.println 'git rev-parse HEAD'.execute().text
+        }
+    }
+}
+
+build.dependsOn preBuild
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    archiveBaseName = 'view'
+    archiveVersion = ''
+}
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-actuator')
+    implementation('org.springframework.boot:spring-boot-starter-security')
+    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+
+    implementation('org.webjars:Semantic-UI:2.1.8')
+    implementation('org.webjars:jquery:2.2.1')
+    implementation('org.webjars:handlebars:4.7.6')
+    implementation('org.webjars:d3js:6.6.0')
+
+    implementation('com.esotericsoftware.yamlbeans:yamlbeans:1.15')
+    implementation('org.ocpsoft.prettytime:prettytime:5.0.2.Final')
+    implementation('joda-time:joda-time:2.10.13')
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.junit.vintage:junit-vintage-engine')
+}
+
+
+eclipse {
+    classpath {
+        containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+        containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+    }
+}
+
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+    }
+}
+
+tasks.named('wrapper') {
+    gradleVersion = '7.3.1'
+    distributionType = Wrapper.DistributionType.ALL
+}
