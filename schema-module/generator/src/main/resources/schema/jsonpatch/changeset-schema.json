@@ -1,0 +1,100 @@
+{
+  "title": "Changeset",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "path": {
+      "description": "A JSON Pointer path.",
+      "type": "string"
+    },
+    "field": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "required": [
+            "value",
+            "op",
+            "path"
+          ],
+          "properties": {
+            "path": {
+              "$ref": "#/definitions/path"
+            },
+            "op": {
+              "description": "The operation to perform.",
+              "type": "string",
+              "enum": [
+                "add",
+                "replace",
+                "test"
+              ]
+            },
+            "value": {
+              "description": "The value to add, replace or test."
+            }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": [
+            "op",
+            "path"
+          ],
+          "properties": {
+            "path": {
+              "$ref": "#/definitions/path"
+            },
+            "op": {
+              "description": "The operation to perform.",
+              "type": "string",
+              "enum": [
+                "remove"
+              ]
+            }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": [
+            "from",
+            "op",
+            "path"
+          ],
+          "properties": {
+            "path": {
+              "$ref": "#/definitions/path"
+            },
+            "op": {
+              "description": "The operation to perform.",
+              "type": "string",
+              "enum": [
+                "move",
+                "copy"
+              ]
+            },
+            "from": {
+              "$ref": "#/definitions/path",
+              "description": "A JSON Pointer path pointing to the location to move/copy from."
+            }
+          }
+        }
+      ]
+    }
+  },
+  "id": "https://json.schemastore.org/json-patch.json",
+  "type": "object",
+  "properties": {
+    "order": {
+      "type": "integer"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/field"
+      }
+    }
+  }
+}

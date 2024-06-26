@@ -39,6 +39,10 @@
       <artifactId>jsonschema2pojo-maven-plugin</artifactId>
     </dependency>
     <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+    <dependency>
       <groupId>one.duckling</groupId>
       <artifactId>mbknor-jackson-jsonschema-java8</artifactId>
     </dependency>
@@ -53,6 +57,17 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.opensearch.client</groupId>
+      <artifactId>spring-data-opensearch</artifactId>
+      <version>1.4.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.opensearch.client</groupId>
+          <artifactId>opensearch-rest-high-level-client</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 
@@ -140,7 +155,7 @@
             </goals>
             <configuration>
               <sources>
-                <source>target/generated-sources/jsonschema2pojo/</source>
+                <source>${project.basedir}/target/generated-sources/jsonschema2pojo</source>
               </sources>
             </configuration>
           </execution>

@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.pivio.schema.PivioValidator;
 import io.pivio.schema.generated.pivio.DependsOn;
 import io.pivio.schema.generated.pivio.Internal;
-import io.pivio.schema.generated.pivio.PivioObject;
+import io.pivio.schema.generated.pivio.PivioDocument;
 import io.pivio.schema.generated.pivio.Runtime;
 import io.pivio.schema.generated.pivio.Service;
 
@@ -27,7 +27,7 @@ public class TestPivioValidator {
   private Path workingDirectory;
 
   private JsonMapper jsonMapper = new JsonMapper(new JsonFactory());
-  private Supplier<PivioObject> pivioGenerator = () -> new PivioObject();
+  private Supplier<PivioDocument> pivioGenerator = () -> new PivioDocument();
   private PivioValidator validator;
 
   @BeforeEach
@@ -35,13 +35,13 @@ public class TestPivioValidator {
 
   @Test
   public void testEmptyValidation() throws Exception {
-    PivioObject testObj = pivioGenerator.get();
+    PivioDocument testObj = pivioGenerator.get();
     assertFalse(PivioValidator.validate(jsonMapper.valueToTree(testObj)).isValidated());
   }
 
   @Test
   public void testValidation() throws Exception {
-    PivioObject testObj = pivioGenerator.get();
+    PivioDocument testObj = pivioGenerator.get();
     testObj.id = "test";
     testObj.name = "test";
     testObj.owner = "test";
@@ -51,7 +51,7 @@ public class TestPivioValidator {
 
   @Test
   public void testMissingValidation() throws Exception {
-    PivioObject testObj = pivioGenerator.get();
+    PivioDocument testObj = pivioGenerator.get();
     testObj.id = "test";
     testObj.name = "test";
     testObj.description = "test";
@@ -60,7 +60,7 @@ public class TestPivioValidator {
 
   @Test
   public void testInternalOneOfValidation() throws Exception {
-    PivioObject sourceObj = pivioGenerator.get();
+    PivioDocument sourceObj = pivioGenerator.get();
     sourceObj.id = "test";
     sourceObj.name = "test";
     sourceObj.owner = "test";
@@ -90,7 +90,7 @@ public class TestPivioValidator {
 
   @Test
   public void testRuntimeHosttypeValidation() throws Exception {
-    PivioObject testObj = pivioGenerator.get();
+    PivioDocument testObj = pivioGenerator.get();
     testObj.id = "test";
     testObj.name = "test";
     testObj.owner = "test";

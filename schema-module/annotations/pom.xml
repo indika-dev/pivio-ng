@@ -26,6 +26,17 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.opensearch.client</groupId>
+      <artifactId>spring-data-opensearch</artifactId>
+      <version>1.4.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.opensearch.client</groupId>
+          <artifactId>opensearch-rest-high-level-client</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

@@ -6,8 +6,8 @@ package io.pivio.schema.annotations.custom;
 public class CompositeAnnotator extends org.jsonschema2pojo.CompositeAnnotator {
 
   public CompositeAnnotator() {
-    super(new CustomJsonAnnotator(),
-        new CustomJsonMergeAnnotator()/* , new CustomStagAnnotator() */);
+    super(new CustomJsonAnnotator(), new CustomJsonMergeAnnotator(), new CustomOSIdAnnotator(),
+        new CustomPivioPropertyAnnotator());
   }
 
 }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "pivio-schema.json",
-  "title": "PivioObject",
+  "$id": "https://github.com/indika-dev/pivio-ng/blob/main/schema-module/generator/src/main/resources/schema/pivio/pivio-schema.json",
+  "title": "PivioDocument",
   "type": "object",
   "properties": {
     "data_format_version": {
