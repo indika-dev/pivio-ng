@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "https://json.schemastore.org/json-patch.json",
+  "title": "Changeset",
+  "type": "object",
+  "properties": {
+    "order": {
+      "type": "integer"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/field"
+      }
+    }
+  },
+  "definitions": {
+    "path": {
+      "description": "A JSON Pointer path.",
+      "type": "string"
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "op",
+        "path"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/definitions/path"
+        },
+        "op": {
+          "description": "The operation to perform.",
+          "type": "string",
+          "enum": [
+            "add",
+            "replace",
+            "test",
+            "move",
+            "copy",
+            "remove"
+          ]
+        },
+        "value": {
+          "description": "The value to add, replace or test."
+        }
+      }
+    }
+  }
+}

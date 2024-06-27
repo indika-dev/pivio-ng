@@ -116,7 +116,7 @@
         <groupId>org.jsonschema2pojo</groupId>
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
         <configuration>
-          <sourceDirectory>${project.basedir}/src/main/resources/schema/</sourceDirectory>
+          <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
           <targetPackage>io.pivio.schema.generated</targetPackage>
           <useTitleAsClassname>true</useTitleAsClassname>
           <removeOldOutput>true</removeOldOutput>
@@ -125,7 +125,6 @@
           <includeGetters>false</includeGetters>
           <formatDateTimes>false</formatDateTimes>
           <useJodaDates>true</useJodaDates>
-          <!-- <annotationStyle>gson</annotationStyle> -->
           <customAnnotator>io.pivio.schema.annotations.custom.CompositeAnnotator</customAnnotator>
         </configuration>
         <executions>
