@@ -21,8 +21,10 @@ public class CustomJsonMergeAnnotator extends AbstractAnnotator {
   public void propertyField(JFieldVar field, JDefinedClass clazz, String propertyName,
       JsonNode propertyNode) {
     super.propertyField(field, clazz, propertyName, propertyNode);
-    if (enumsToAnnotate.contains(propertyName)) {
-      field.annotate(JsonMerge.class);
+    if (clazz.name().equals("PivioDocument")) {
+      if (enumsToAnnotate.contains(propertyName)) {
+        field.annotate(JsonMerge.class);
+      }
     }
   }
 

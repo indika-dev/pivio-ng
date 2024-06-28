@@ -5,6 +5,9 @@
   "title": "Changeset",
   "type": "object",
   "properties": {
+    "document": {
+      "type": "string"
+    },
     "order": {
       "type": "integer"
     },
@@ -15,7 +18,7 @@
     "fields": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/field"
+        "$ref": "#/definitions/fields"
       }
     }
   },
@@ -24,7 +27,7 @@
       "description": "A JSON Pointer path.",
       "type": "string"
     },
-    "field": {
+    "fields": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
