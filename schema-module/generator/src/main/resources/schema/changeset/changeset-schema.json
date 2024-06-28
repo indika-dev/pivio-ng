@@ -1,6 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "$id": "https://json.schemastore.org/json-patch.json",
+  "description": "This schema is for generating source code and is not appropriate for validating an instance",
   "title": "Changeset",
   "type": "object",
   "properties": {
@@ -26,11 +27,6 @@
     "field": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "value",
-        "op",
-        "path"
-      ],
       "properties": {
         "path": {
           "$ref": "#/definitions/path"
@@ -49,6 +45,10 @@
         },
         "value": {
           "description": "The value to add, replace or test."
+        },
+        "from": {
+          "$ref": "#/definitions/path",
+          "description": "A JSON Pointer path pointing to the location to move/copy from."
         }
       }
     }

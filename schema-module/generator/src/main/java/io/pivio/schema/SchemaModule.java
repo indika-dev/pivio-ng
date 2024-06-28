@@ -15,7 +15,7 @@ public abstract class SchemaModule {
   }
 
   public static String providePathToJsonPatchSchemaFile() {
-    return new String("/schema/jsonpatch-schema.json");
+    return new String("/schema/changeset-validation-schema.json");
   }
 
   public static JsonSchema providePivioSchema() {

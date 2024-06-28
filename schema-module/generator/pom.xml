@@ -116,7 +116,9 @@
         <groupId>org.jsonschema2pojo</groupId>
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
         <configuration>
-          <sourceDirectory>${project.basedir}/src/main/resources/schema</sourceDirectory>
+          <sourcePaths>
+            <sourcePath>${project.basedir}/src/main/resources/schema</sourcePath>
+          </sourcePaths>
           <targetPackage>io.pivio.schema.generated</targetPackage>
           <useTitleAsClassname>true</useTitleAsClassname>
           <removeOldOutput>true</removeOldOutput>
