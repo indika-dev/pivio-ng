@@ -127,6 +127,8 @@
           <includeGetters>false</includeGetters>
           <formatDateTimes>false</formatDateTimes>
           <useJodaDates>true</useJodaDates>
+          <useLongIntegers>true</useLongIntegers>
+          <usePrimitives>true</usePrimitives>
           <customAnnotator>io.pivio.schema.annotations.custom.CompositeAnnotator</customAnnotator>
         </configuration>
         <executions>
