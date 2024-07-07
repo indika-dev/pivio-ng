@@ -1,0 +1,35 @@
+<ruleset comparisonMethod="maven"
+  xmlns="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://mojo.codehaus.org/versions-maven-plugin/rule/2.0.0 https://www.mojohaus.org/versions-maven-plugin/xsd/rule-2.0.0.xsd">
+
+  <ignoreVersions>
+    <ignoreVersion type="regex">.*[-_\.](alpha|Alpha|ALPHA|beta|Beta|BETA|rc|RC|M|EA|SNAPSHOT)[-_\.]?[0-9]?.*</ignoreVersion>
+  </ignoreVersions>
+  <rules>
+    <rule groupId="org.eclipse.jgit" comparisonMethod="maven">
+      <ignoreVersions>
+        <!-- it has to be carefully checked, if new jgit version works in native image -->
+        <ignoreVersion type="regex">.*</ignoreVersion>
+      </ignoreVersions>
+    </rule>
+    <rule groupId="org.dizitart" artifactId="nitrite" comparisonMethod="maven">
+      <ignoreVersions>
+        <!-- it's not obvious, when 4.2.0 will be available and API 4.2.0 has breaking changes  -->
+        <ignoreVersion type="regex">[4-9]\.[0-9]\.[0-9].*</ignoreVersion>
+      </ignoreVersions>
+    </rule>
+    <rule groupId="org.yaml" artifactId="snakeyaml" comparisonMethod="maven">
+      <ignoreVersions>
+        <!-- version 2.0 has no SafeConstructor, leading to a NoSuchMethodException in maven-plugin -->
+        <ignoreVersion type="regex">[2-9]\.[0-9]*[\.]?[0-9]?.*</ignoreVersion>
+      </ignoreVersions>
+    </rule>
+    <rule groupId="org.slf4j" artifactId="slf4j-nop" comparisonMethod="maven">
+      <ignoreVersions>
+        <!-- version 1.7.30 is the only one, that works -->
+        <ignoreVersion type="regex">.*</ignoreVersion>
+      </ignoreVersions>
+    </rule>
+  </rules>
+</ruleset>
