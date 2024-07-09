@@ -11,7 +11,7 @@ import com.networknt.schema.SpecVersion.VersionFlag;
 public abstract class SchemaModule {
 
   public static String providePathToPivioSchemaFile() {
-    return new String("/schema/pivio/pivio-schema.json");
+    return new String("/schema/pivio/steckbrief-schema.json");
   }
 
   public static String providePathToJsonPatchSchemaFile() {

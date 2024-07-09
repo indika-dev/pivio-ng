@@ -1,61 +1,23 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/indika-dev/pivio-ng/blob/main/schema-module/generator/src/main/resources/schema/pivio/pivio-schema.json",
-  "title": "PivioDocument",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "schema/pivio/pivioobject",
+  "title": "PivioObject",
   "type": "object",
+  "extends": {
+    "$ref": "steckbrief-schema.json"
+  },
   "properties": {
     "data_format_version": {
       "type": "string",
       "default": "1.0"
     },
-    "id": {
-      "type": "string",
-      "$comment": "id ist in der Regel eine UUID, aber dies wird von Pivio nicht erzwungen. \"format\": \"uuid\" "
-    },
-    "name": {
-      "type": "string"
-    },
-    "type": {
-      "enum": [
-        "service",
-        "library",
-        "mobile_app"
-      ],
-      "default": "service"
-    },
-    "owner": {
-      "type": "string"
-    },
-    "description": {
-      "type": "string"
-    },
-    "vcsroot": {
-      "type": "string"
-    },
     "contact": {
-      "type": "string"
-    },
-    "short_name": {
       "type": "string"
     },
     "tags": {
       "type": "array",
       "items": {
         "type": "string"
-      }
-    },
-    "links": {
-      "type": "object",
-      "properties": {
-        "homepage": {
-          "type": "string"
-        },
-        "buildchain": {
-          "type": "string"
-        },
-        "api_docs": {
-          "type": "string"
-        }
       }
     },
     "service": {
@@ -167,12 +129,12 @@
                     "type": "string"
                   },
                   "via": {
-                    "type": "string"
-                  },
-                  "required": [
-                    "target"
-                  ]
-                }
+                    "$ref": "#/$defs/plausibleUrl"
+                  }
+                },
+                "required": [
+                  "target"
+                ]
               }
             }
           }
@@ -210,13 +172,13 @@
           "anyOf": [
             {
               "enum": [
-                "k8s",
-                "Docker",
-                "Weblogic"
+                "Container",
+                "Bare-Bone",
+                "Application Server"
               ]
             },
             {
-              "$comment": "dies ist für den Fall von Migrationen mit neuen Werten gedacht oder auch wenn eigene Werte eingetragen wurden",
+              "$comment": "in case of own values or migrations to the proposed ones",
               "pattern": "."
             }
           ]
@@ -228,95 +190,60 @@
               "enum": [
                 "Public Cloud",
                 "Private Cloud",
-                "RHVM"
+                "internal Network",
+                "external Network"
               ],
               "$deprecated": true
             },
             {
-              "$comment": "dies ist für den Fall von Migrationen mit neuen Werten gedacht oder auch wenn eigene Werte eingetragen wurden",
+              "$comment": "in case of own values or migrations to the proposed ones",
               "pattern": "."
             }
           ]
         },
         "environment": {
-          "enum": [
-            "test",
-            "staging",
-            "production"
-          ],
-          "default": "production"
-        }
-      }
-    },
-    "software_dependencies": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "licenses": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "enum": [
-                    "Commercial License",
-                    "GPL-2.0",
-                    "GPL-3.0",
-                    "BSD-3-Clause",
-                    "BSD-2-Clause",
-                    "LGPL-2.0",
-                    "LGPL-2.1",
-                    "LGPL-3.0",
-                    "MIT",
-                    "MPL-2.0",
-                    "CDDL-1.0",
-                    "EPL-2.0"
-                  ]
-                },
-                "url": {
-                  "type": "string",
-                  "format": "uri"
-                },
-                "required": [
-                  "name"
-                ]
-              }
+          "type": "string",
+          "anyOf": [
+            {
+              "enum": [
+                "test",
+                "staging",
+                "production"
+              ],
+              "default": "production"
+            },
+            {
+              "$comment": "in case of own values or migrations to the proposed ones",
+              "pattern": "."
             }
-          }
+          ]
         }
       }
-    },
-    "created": {
-      "type": "string",
-      "format": "date-time",
-      "readOnly": "true",
-      "$comment": "dies wird vom Pivioserver gemanaged"
-    },
-    "lastUpload": {
-      "type": "string",
-      "format": "date-time",
-      "readOnly": "true",
-      "$comment": "dies wird vom Pivioserver gemanaged"
-    },
-    "lastUpdate": {
-      "type": "string",
-      "format": "date-time",
-      "readOnly": "true",
-      "$comment": "dies wird vom Pivioserver gemanaged"
     }
   },
   "required": [
     "id",
     "name",
+    "short_name",
     "type",
     "owner",
     "description"
   ],
   "$defs": {
+    "saneUrl": {
+      "format": "uri",
+      "pattern": "^https?://"
+    },
+    "plausibleUrl": {
+      "anyOf": [
+        {
+          "$ref": "#/defs/saneUrl"
+        },
+        {
+          "format": "hostname"
+        }
+      ]
+    },
     "network-port": {
       "type": "integer",
       "minimum": 0,
@@ -329,7 +256,9 @@
         "udp",
         "atp",
         "sctp",
-        "quic"
+        "quic",
+        "dccp",
+        "rsvp"
       ]
     },
     "t-shirt-sizes": {

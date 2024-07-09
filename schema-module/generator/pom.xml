@@ -129,10 +129,13 @@
           <useJodaDates>true</useJodaDates>
           <useLongIntegers>true</useLongIntegers>
           <usePrimitives>true</usePrimitives>
+          <generateBuilders>true</generateBuilders>
           <customAnnotator>io.pivio.schema.annotations.custom.CompositeAnnotator</customAnnotator>
         </configuration>
         <executions>
           <execution>
+            <id>generate-sources</id>
+            <phase>generate-sources</phase>
             <goals>
               <goal>generate</goal>
             </goals>
@@ -151,8 +154,7 @@
         <artifactId>build-helper-maven-plugin</artifactId>
         <executions>
           <execution>
-            <?m2e execute onConfiguration?>
-            <id>add-source</id>
+            <id>add-sources</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>add-source</goal>

@@ -2,6 +2,7 @@ package io.pivio.schema.annotations.custom;
 
 import java.util.Map;
 import java.util.Set;
+
 import org.jsonschema2pojo.AbstractAnnotator;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -9,6 +10,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.Mapping;
 import org.springframework.data.elasticsearch.annotations.Setting;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
@@ -18,10 +20,13 @@ import com.sun.codemodel.JFieldVar;
  */
 public class CustomPivioDocumentAnnotator extends AbstractAnnotator {
 
-  private static final Set<String> enumsToAnnotate = Set.of("id");
+  private static final Set<String> idFieldToAnnotate = Set.of("id");
 
   private static final Map<String, String> textPropertiesToAnnotate = Map.of("type", "type", "name",
       "name", "serviceName", "short_name", "owner", "owner", "description", "description");
+
+  private static final Map<String, String> nestedPropertiesToAnnotate = Map.of("software_dependencies",
+      "software_dependencies");
 
   @Override
   public void propertyField(JFieldVar field, JDefinedClass clazz, String propertyName,
@@ -32,8 +37,12 @@ public class CustomPivioDocumentAnnotator extends AbstractAnnotator {
         field.annotate(Field.class).param("name", textPropertiesToAnnotate.get(propertyName))
             .param("type", FieldType.Text);
       }
-      if (enumsToAnnotate.contains(propertyName)) {
+      if (idFieldToAnnotate.contains(propertyName)) {
         field.annotate(Id.class);
+      }
+      if (nestedPropertiesToAnnotate.containsKey(propertyName)) {
+        field.annotate(Field.class).param("name", nestedPropertiesToAnnotate.get(propertyName)).param("type",
+            FieldType.Nested).param("includeInParent", true);
       }
       if (propertyName.equals("type")) { // ensure, that PivioDocument class is only once annotated
         clazz.annotate(Document.class).param("indexName", "steckbrief").param("createIndex", true);
