@@ -3,9 +3,11 @@ package io.pivio.schema;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.ValidationMessage;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -20,9 +22,6 @@ public class PivioValidator implements Predicate<JsonNode> {
   }
 
   private static JsonSchema PIVIOSCHEMA;
-
-  public record ValidationResult(boolean isValidated, Set<ValidationMessage> validationMessages) {
-  };
 
   public boolean test(JsonNode node) {
     return PivioValidator.validate(node).isValidated();

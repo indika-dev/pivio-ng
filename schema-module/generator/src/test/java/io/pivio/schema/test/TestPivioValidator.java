@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import io.pivio.schema.PivioValidator;
+import io.pivio.schema.generated.pivio.License;
+import io.pivio.schema.generated.pivio.License.FullName;
 import io.pivio.schema.generated.pivio.Links;
 import io.pivio.schema.generated.pivio.PivioDocument;
 import io.pivio.schema.generated.pivio.PivioObject;
@@ -73,7 +76,8 @@ public class TestPivioValidator {
     sourceObj.description = "test";
     sourceObj.shortName = "test";
     sourceObj.softwareDependencies = new ArrayList<>();
-    sourceObj.softwareDependencies.add(new SoftwareDependency());
+    sourceObj.softwareDependencies.add(new SoftwareDependency().withName("PostgresQL")
+        .withLicenses(List.of(new License().withFullName(FullName.GPL_3_0))));
     JsonNode testObj = jsonMapper.valueToTree(sourceObj);
     assertTrue(PivioValidator.validate(testObj).isValidated());
   }
