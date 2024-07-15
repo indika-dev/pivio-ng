@@ -2,13 +2,14 @@ package io.pivio.schema.annotations.custom;
 
 import java.util.Map;
 import java.util.Set;
+
 import org.jsonschema2pojo.AbstractAnnotator;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.Mapping;
 import org.springframework.data.elasticsearch.annotations.Setting;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JFieldVar;
@@ -20,8 +21,8 @@ public class CustomChangesetAnnotator extends AbstractAnnotator {
 
   private static final Set<String> idPropertyToAnnotate = Set.of("document");
 
-  private static final Map<String, String> propertiesToAnnotate =
-      Map.of("order", "order", "timestamp", "timestamp", "fields", "fields");
+  private static final Map<String, String> propertiesToAnnotate = Map.of("order", "order", "timestamp", "timestamp",
+      "fields", "fields");
 
   @Override
   public void propertyField(JFieldVar field, JDefinedClass clazz, String propertyName,

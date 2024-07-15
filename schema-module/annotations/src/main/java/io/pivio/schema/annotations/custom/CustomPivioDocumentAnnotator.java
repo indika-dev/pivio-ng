@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.Mapping;
 import org.springframework.data.elasticsearch.annotations.Setting;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -47,7 +46,7 @@ public class CustomPivioDocumentAnnotator extends AbstractAnnotator {
       if (propertyName.equals("type")) { // ensure, that PivioDocument class is only once annotated
         clazz.annotate(Document.class).param("indexName", "steckbrief").param("createIndex", true);
         clazz.annotate(Setting.class).param("settingPath", "settings.json");
-        clazz.annotate(Mapping.class).param("mappingPath", "mapping.json");
+        // clazz.annotate(Mapping.class).param("mappingPath", "mapping.json");
       }
     }
   }
