@@ -16,6 +16,7 @@
   <modules>
     <module>generator</module>
     <module>annotations</module>
+    <module>transformators</module>
   </modules>
 
   <dependencyManagement>

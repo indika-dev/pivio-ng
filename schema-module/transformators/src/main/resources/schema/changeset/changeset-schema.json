@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$id": "https://json.schemastore.org/json-patch.json",
+  "description": "This schema is for generating source code and is not appropriate for validating an instance",
+  "title": "Changeset",
+  "type": "object",
+  "properties": {
+    "document": {
+      "type": "string"
+    },
+    "order": {
+      "type": "integer"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/fields"
+      }
+    }
+  },
+  "definitions": {
+    "path": {
+      "description": "A JSON Pointer path.",
+      "type": "string"
+    },
+    "fields": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "$ref": "#/definitions/path"
+        },
+        "op": {
+          "description": "The operation to perform.",
+          "type": "string",
+          "enum": [
+            "add",
+            "replace",
+            "test",
+            "move",
+            "copy",
+            "remove"
+          ]
+        },
+        "value": {
+          "description": "The value to add, replace or test."
+        },
+        "from": {
+          "$ref": "#/definitions/path",
+          "description": "A JSON Pointer path pointing to the location to move/copy from."
+        }
+      }
+    }
+  }
+}

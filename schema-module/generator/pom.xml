@@ -113,6 +113,32 @@
     </resources>
     <plugins>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>Version Calculation</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>io.pivio.schema.transform.TransformPivioDefinition</mainClass>
+          <arguments>
+            <argument>argument1</argument>
+          </arguments>
+          <systemProperties>
+            <systemProperty>
+              <key>myproperty</key>
+              <value>myvalue</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.jsonschema2pojo</groupId>
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
         <configuration>
@@ -145,6 +171,11 @@
           <dependency>
             <groupId>io.pivio</groupId>
             <artifactId>pivio-schema-annotations</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>io.pivio</groupId>
+            <artifactId>pivio-schema-transformators</artifactId>
             <version>${project.version}</version>
           </dependency>
         </dependencies>
