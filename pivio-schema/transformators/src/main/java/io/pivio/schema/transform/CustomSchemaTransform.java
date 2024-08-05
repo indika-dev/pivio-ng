@@ -18,9 +18,9 @@ import com.bazaarvoice.jolt.JsonUtils;
 /**
  * applies the provided transformations to the provided pivio schema
  *
- * args[0] contains the absolute file path or path inside classpath to the transformation rules
- * args[1] contains the absolute file path or path inside classpath to the pivio Schema
- * args[2] contains the absolute file path for the transformed schema
+ * @param args[0] contains the absolute file path or path inside classpath to the transformation rules
+ * @param args[1] contains the absolute file path or path inside classpath to the pivio Schema
+ * @param args[2] contains the absolute file path for the transformed schema
  */
 // @formatter:on
 public class CustomSchemaTransform {
@@ -43,6 +43,8 @@ public class CustomSchemaTransform {
         }
       }
       chainrSpecJSON = JsonUtils.filepathToList(extractedFile.toString());
+    } else if (transformSpecURL == null) {
+      chainrSpecJSON = JsonUtils.filepathToList(args[0]);
     } else {
       chainrSpecJSON = JsonUtils.classpathToList(args[0]);
     }
@@ -66,6 +68,8 @@ public class CustomSchemaTransform {
         }
       }
       inputJSON = JsonUtils.filepathToObject(extractedFile.toString());
+    } else if (inputJsonURL == null) {
+      inputJSON = JsonUtils.filepathToObject(args[1]);
     } else {
       inputJSON = JsonUtils.filepathToObject(inputJsonURL.getFile());
     }
