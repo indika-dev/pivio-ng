@@ -11,6 +11,10 @@
   <artifactId>pivio-schema-transformators</artifactId>
   <packaging>jar</packaging>
 
+  <properties>
+    <mainClass>io.pivio.schema.transform.CustomSchemaTransform</mainClass>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.bazaarvoice.jolt</groupId>
@@ -43,6 +47,58 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>false</doCheck>
+          <doUpdate>true</doUpdate>
+          <revisionOnScmFailure>na</revisionOnScmFailure>
+          <shortRevisionLength>7</shortRevisionLength>
+          <scmBranchPropertyName>buildScmBranch</scmBranchPropertyName>
+          <format>{0}</format>
+          <items>
+            <item>scmVersion</item>
+          </items>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addClasspath>true</addClasspath>
+              <mainClass>${mainClass}</mainClass>
+            </manifest>
+            <manifestEntries>
+              <Implementation-Build>${buildNumber}</Implementation-Build>
+              <Build-Branch>${buildScmBranch}</Build-Branch>
+            </manifestEntries>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>assemble-all</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

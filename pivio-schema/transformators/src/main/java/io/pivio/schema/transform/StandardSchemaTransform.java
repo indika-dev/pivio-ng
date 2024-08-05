@@ -14,9 +14,9 @@ import com.bazaarvoice.jolt.Chainr;
 import com.bazaarvoice.jolt.JsonUtils;
 
 /**
- * TransformPivioDefinition
+ * applies the standard transformations to the included pivio schema
  */
-public class TransformPivioDefinition {
+public class StandardSchemaTransform {
   public static void main(String[] args) throws IOException {
 
     // How to access the test artifacts, i.e. JSON files
@@ -25,7 +25,7 @@ public class TransformPivioDefinition {
     // JsonUtils.filepathToList : you can use an absolute path to specify the files
 
     URL transformSpecURL =
-        TransformPivioDefinition.class.getClassLoader().getResource("jolt/OSMappingTransform.json");
+        StandardSchemaTransform.class.getClassLoader().getResource("jolt/OSMappingTransform.json");
     List<Object> chainrSpecJSON = new ArrayList<>();
     if (transformSpecURL != null && "jar".equals(transformSpecURL.getProtocol())) {
       Path tmpDirectory = Files.createTempDirectory("tmpJolt");
@@ -33,7 +33,7 @@ public class TransformPivioDefinition {
       byte[] buffer = new byte[8 * 1024];
       Path extractedFile = Paths.get(tmpDirectory.toString(), "OSMappingTransform.json");
       try (
-          InputStream is = TransformPivioDefinition.class.getClassLoader()
+          InputStream is = StandardSchemaTransform.class.getClassLoader()
               .getResourceAsStream("jolt/OSMappingTransform.json");
           OutputStream os = new FileOutputStream(extractedFile.toFile());) {
         int bytesRead;
@@ -48,7 +48,7 @@ public class TransformPivioDefinition {
 
     Chainr chainr = Chainr.fromSpec(chainrSpecJSON);
 
-    URL inputJsonURL = TransformPivioDefinition.class.getClassLoader()
+    URL inputJsonURL = StandardSchemaTransform.class.getClassLoader()
         .getResource("schema/pivio/steckbrief-schema.json");
     Object inputJSON = null;
     if (inputJsonURL != null && "jar".equals(inputJsonURL.getProtocol())) {
@@ -57,7 +57,7 @@ public class TransformPivioDefinition {
       byte[] buffer = new byte[8 * 1024];
       Path extractedFile = Paths.get(tmpDirectory.toString(), "steckbrief-schema.json");
       try (
-          InputStream is = TransformPivioDefinition.class.getClassLoader()
+          InputStream is = StandardSchemaTransform.class.getClassLoader()
               .getResourceAsStream("schema/pivio/steckbrief-schema.json");
           OutputStream os = new FileOutputStream(extractedFile.toFile());) {
         int bytesRead;
