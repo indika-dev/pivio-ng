@@ -15,13 +15,20 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <groupId>io.pivio</groupId>
   <artifactId>pivio-schema-generator</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>pivio-schema-generator</name>
 
   <dependencies>
+    <dependency>
+      <groupId>io.pivio</groupId>
+      <artifactId>pivio-schema-transformators</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.pivio</groupId>
+      <artifactId>pivio-schema-annotations</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
@@ -118,7 +125,7 @@
         <version>3.3.0</version>
         <executions>
           <execution>
-            <id>Version Calculation</id>
+            <id>Schema Transformation</id>
             <phase>generate-sources</phase>
             <goals>
               <goal>java</goal>
@@ -127,6 +134,8 @@
         </executions>
         <configuration>
           <mainClass>io.pivio.schema.transform.TransformPivioDefinition</mainClass>
+          <includeProjectDependencies>true</includeProjectDependencies>
+          <includePluginDependencies>true</includePluginDependencies>
           <arguments>
             <argument>argument1</argument>
           </arguments>
@@ -137,6 +146,13 @@
             </systemProperty>
           </systemProperties>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.bazaarvoice.jolt</groupId>
+            <artifactId>jolt-complete</artifactId>
+            <version>0.1.8</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.jsonschema2pojo</groupId>
@@ -171,11 +187,6 @@
           <dependency>
             <groupId>io.pivio</groupId>
             <artifactId>pivio-schema-annotations</artifactId>
-            <version>${project.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>io.pivio</groupId>
-            <artifactId>pivio-schema-transformators</artifactId>
             <version>${project.version}</version>
           </dependency>
         </dependencies>

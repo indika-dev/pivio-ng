@@ -9,8 +9,6 @@
   </parent>
 
   <artifactId>pivio-schema-annotations</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>pivio-schema-annotations</name>
   <packaging>jar</packaging>
 
   <dependencies>

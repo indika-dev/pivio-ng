@@ -9,8 +9,6 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>pivio-schema</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>pivio-schema</name>
   <packaging>pom</packaging>
 
   <modules>
