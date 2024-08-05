@@ -1,6 +1,9 @@
 package io.pivio.schema.transform;
 
 import java.io.IOException;
+import java.util.List;
+import com.bazaarvoice.jolt.Chainr;
+import com.bazaarvoice.jolt.JsonUtils;
 
 /**
  * TransformPivioDefinition

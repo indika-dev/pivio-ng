@@ -31,7 +31,7 @@
   <modules>
     <!-- <module>pivio-web</module> -->
     <module>pivio-server</module>
-    <module>schema-module</module>
+    <module>pivio-schema</module>
   </modules>
 
   <properties>

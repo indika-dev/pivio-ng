@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>pivio-schema-annotations</artifactId>
+  <artifactId>pivio-schema-transformators</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>pivio-schema-transformators</name>
   <packaging>jar</packaging>
