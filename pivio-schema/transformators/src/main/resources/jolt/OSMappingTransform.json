@@ -2,10 +2,16 @@
     {
         "operation": "shift",
         "spec": {
-            "rating": {
-                "primary": {
-                    "value": "Rating",
-                    "max": "RatingRange"
+            "steckbrief": {
+                "properties": {
+                    "type": "properties.type",
+                    "name": "properties.name",
+                    "short_name": "properties.short_name",
+                    "owner": "properties.owner",
+                    "description": "properties.description",
+                    "vcsroot": "properties.vcsroot",
+                    "links": "properties.links",
+                    "software_dependencies": "properties.software_dependencies"
                 },
                 "*": {
                     "value": "SecondaryRatings.&1.Value",
@@ -18,17 +24,30 @@
     {
         "operation": "default",
         "spec": {
-            "~z": "zz",
-            "~a": "aa",
-            "~id": "id",
-            "zz": "zz",
-            "~deleteme": "deleteme"
+            "$schema": "http://json-schema.org/draft-04/schema#",
+            "$id": "/schema/pivio/document",
+            "title": "PivioDocument",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "$comment": "in common case, id is an UUID, but this is not recommended by pivio server. \"format\": \"uuid\" "
+                },
+                "type": {
+                    "enum": [
+                        "service",
+                        "library",
+                        "mobile_app"
+                    ],
+                    "default": "service"
+                }
+            }
         }
     },
     {
         "operation": "remove",
         "spec": {
-            "~deleteme": ""
+            "steckbrief": ""
         }
     },
     {

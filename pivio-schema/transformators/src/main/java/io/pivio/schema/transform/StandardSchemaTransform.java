@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.bazaarvoice.jolt.Chainr;
 import com.bazaarvoice.jolt.JsonUtils;
 
@@ -24,22 +28,14 @@ public class StandardSchemaTransform {
     // path
     // JsonUtils.filepathToList : you can use an absolute path to specify the files
 
-    URL transformSpecURL =
-        StandardSchemaTransform.class.getClassLoader().getResource("jolt/OSMappingTransform.json");
+    URL transformSpecURL = StandardSchemaTransform.class.getClassLoader().getResource("jolt/OSMappingTransform.json");
     List<Object> chainrSpecJSON = new ArrayList<>();
     if (transformSpecURL != null && "jar".equals(transformSpecURL.getProtocol())) {
-      Path tmpDirectory = Files.createTempDirectory("tmpJolt");
-      tmpDirectory.toFile().deleteOnExit();
-      byte[] buffer = new byte[8 * 1024];
-      Path extractedFile = Paths.get(tmpDirectory.toString(), "OSMappingTransform.json");
-      try (
-          InputStream is = StandardSchemaTransform.class.getClassLoader()
-              .getResourceAsStream("jolt/OSMappingTransform.json");
-          OutputStream os = new FileOutputStream(extractedFile.toFile());) {
-        int bytesRead;
-        while ((bytesRead = is.read(buffer)) != -1) {
-          os.write(buffer, 0, bytesRead);
-        }
+      ReadableByteChannel readableByteChannel = Channels.newChannel(transformSpecURL.openStream());
+      Path extractedFile = Files.createTempFile("jolt", ".json");
+      try (FileOutputStream fos = new FileOutputStream(extractedFile.toFile())) {
+        FileChannel fileChannel = fos.getChannel();
+        fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
       }
       chainrSpecJSON = JsonUtils.filepathToList(extractedFile.toString());
     } else {
