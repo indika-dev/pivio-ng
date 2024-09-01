@@ -21,6 +21,12 @@ import com.bazaarvoice.jolt.JsonUtils;
  * applies the standard transformations to the included pivio schema
  */
 public class StandardSchemaTransform {
+
+  private static final String SOURCE_TO_TRANSFORM_FILENAME = "mapping.json";
+  private static final String SOURCE_TO_TRANSFORM = "schema/pivio/" + SOURCE_TO_TRANSFORM_FILENAME;
+  private static final String TRANSFORMATION_RULES_SOURCE = "jolt/OSMappingTransform.json";
+  private static final String TRANSFORM_RESULT_FILENAME = "steckbrief-schema.json";
+
   public static void main(String[] args) throws IOException {
 
     // How to access the test artifacts, i.e. JSON files
@@ -28,7 +34,7 @@ public class StandardSchemaTransform {
     // path
     // JsonUtils.filepathToList : you can use an absolute path to specify the files
 
-    URL transformSpecURL = StandardSchemaTransform.class.getClassLoader().getResource("jolt/OSMappingTransform.json");
+    URL transformSpecURL = StandardSchemaTransform.class.getClassLoader().getResource(TRANSFORMATION_RULES_SOURCE);
     List<Object> chainrSpecJSON = new ArrayList<>();
     if (transformSpecURL != null && "jar".equals(transformSpecURL.getProtocol())) {
       ReadableByteChannel readableByteChannel = Channels.newChannel(transformSpecURL.openStream());
@@ -39,22 +45,22 @@ public class StandardSchemaTransform {
       }
       chainrSpecJSON = JsonUtils.filepathToList(extractedFile.toString());
     } else {
-      chainrSpecJSON = JsonUtils.classpathToList("jolt/OSMappingTransform.json");
+      chainrSpecJSON = JsonUtils.classpathToList(TRANSFORMATION_RULES_SOURCE);
     }
 
     Chainr chainr = Chainr.fromSpec(chainrSpecJSON);
 
     URL inputJsonURL = StandardSchemaTransform.class.getClassLoader()
-        .getResource("schema/pivio/steckbrief-schema.json");
+        .getResource(SOURCE_TO_TRANSFORM);
     Object inputJSON = null;
     if (inputJsonURL != null && "jar".equals(inputJsonURL.getProtocol())) {
       Path tmpDirectory = Files.createTempDirectory("tmpTransform");
       tmpDirectory.toFile().deleteOnExit();
       byte[] buffer = new byte[8 * 1024];
-      Path extractedFile = Paths.get(tmpDirectory.toString(), "steckbrief-schema.json");
+      Path extractedFile = Paths.get(tmpDirectory.toString(), SOURCE_TO_TRANSFORM_FILENAME);
       try (
           InputStream is = StandardSchemaTransform.class.getClassLoader()
-              .getResourceAsStream("schema/pivio/steckbrief-schema.json");
+              .getResourceAsStream(SOURCE_TO_TRANSFORM);
           OutputStream os = new FileOutputStream(extractedFile.toFile());) {
         int bytesRead;
         while ((bytesRead = is.read(buffer)) != -1) {
