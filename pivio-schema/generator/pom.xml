@@ -137,7 +137,8 @@
           <includeProjectDependencies>true</includeProjectDependencies>
           <includePluginDependencies>true</includePluginDependencies>
           <arguments>
-            <argument>argument1</argument>
+            <argument>
+              ${project.buildDir}/generated-sources/schema-transform/schema/pivio/steckbrief-schema.json</argument>
           </arguments>
           <systemProperties>
             <systemProperty>
