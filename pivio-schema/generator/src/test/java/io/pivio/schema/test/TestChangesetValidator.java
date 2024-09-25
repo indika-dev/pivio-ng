@@ -2,22 +2,18 @@ package io.pivio.schema.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
-
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-
 import io.pivio.schema.ChangesetValidator;
 import io.pivio.schema.PivioValidator;
 import io.pivio.schema.generated.changeset.Changeset;
@@ -43,8 +39,7 @@ public class TestChangesetValidator {
   private Supplier<Changeset> changesetGenerator = () -> new Changeset();
 
   @BeforeEach
-  public void initialise() throws Throwable {
-  }
+  public void initialise() throws Throwable {}
 
   @Test
   public void testEmptyValidation() throws Exception {
@@ -54,9 +49,9 @@ public class TestChangesetValidator {
 
   @Test
   public void testValidation() throws Exception {
-    Changeset testSet = changesetGenerator.get().withOrder(1l).withDocument(UUID.randomUUID().toString())
-        .withTimestamp(DateTime.now());
-    assertTrue(PivioValidator.validate(jsonMapper.valueToTree(testObj)).isValidated());
+    Changeset testSet = changesetGenerator.get().withOrder(1l)
+        .withDocument(UUID.randomUUID().toString()).withTimestamp(DateTime.now());
+    assertTrue(PivioValidator.validate(jsonMapper.valueToTree(testSet)).isValidated());
   }
 
   @Test

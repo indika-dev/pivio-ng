@@ -12,13 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
-
 import com.bazaarvoice.jolt.Chainr;
 import com.bazaarvoice.jolt.JsonUtils;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * applies the standard transformations to the included pivio schema
@@ -29,29 +26,13 @@ public class StandardSchemaTransform {
   private static final String SOURCE_TO_TRANSFORM = "schema/pivio/" + SOURCE_TO_TRANSFORM_FILENAME;
   private static final String TRANSFORMATION_RULES_SOURCE = "jolt/OSMappingTransform.json";
 
-  private static ObjectNode removeTildeFromKeys(ObjectNode node) {
-    // A naive depth-first search implementation using recursion. Useful
-    // **only** for small object graphs. This will be inefficient
-    // (stack overflow) for finding deeply-nested needles or needles
-    // toward the end of a forest with deeply-nested branches.
-    if (node == null) {
-      return null;
-    }
-    List<Entry<String, JsonNode>> fieldsWithTilde = new ArrayList<>();
-    node.fields().forEachRemaining(currentEntry -> {
-      if (currentEntry.getKey().startsWith("~")) {
-        fieldsWithTilde.add(currentEntry);
-      }
+  private static void removeTildeFromKeys(LinkedHashMap<String, Object> node) {
+    List<String> keysWithTilde = node.keySet().stream().filter(key -> key.startsWith("~")).toList();
+    keysWithTilde.stream().forEach(key -> {
+      node.putFirst(key.substring(1, key.length()), node.remove(key));
     });
-    fieldsWithTilde.forEach(entry -> {
-      node.put(entry.getKey().substring(1, entry.getKey().length()), node.remove(entry.getKey()));
-    });
-    for (JsonNode child : node) {
-      if (child.isContainerNode()) {
-        removeTildeFromKeys((ObjectNode) child);
-      }
-    }
-    return node;
+    node.values().stream().filter(value -> value instanceof LinkedHashMap)
+        .forEach(value -> removeTildeFromKeys((LinkedHashMap) value));
   }
 
   public static void main(String[] args) throws IOException {
@@ -65,7 +46,8 @@ public class StandardSchemaTransform {
     // path
     // JsonUtils.filepathToList : you can use an absolute path to specify the files
 
-    URL transformSpecURL = StandardSchemaTransform.class.getClassLoader().getResource(TRANSFORMATION_RULES_SOURCE);
+    URL transformSpecURL =
+        StandardSchemaTransform.class.getClassLoader().getResource(TRANSFORMATION_RULES_SOURCE);
     List<Object> chainrSpecJSON = new ArrayList<>();
     if (transformSpecURL != null && "jar".equals(transformSpecURL.getProtocol())) {
       ReadableByteChannel readableByteChannel = Channels.newChannel(transformSpecURL.openStream());
@@ -81,8 +63,8 @@ public class StandardSchemaTransform {
 
     Chainr chainr = Chainr.fromSpec(chainrSpecJSON);
 
-    URL inputJsonURL = StandardSchemaTransform.class.getClassLoader()
-        .getResource(SOURCE_TO_TRANSFORM);
+    URL inputJsonURL =
+        StandardSchemaTransform.class.getClassLoader().getResource(SOURCE_TO_TRANSFORM);
     Object inputJSON = null;
     if (inputJsonURL != null && "jar".equals(inputJsonURL.getProtocol())) {
       Path tmpDirectory = Files.createTempDirectory("tmpTransform");
@@ -103,8 +85,13 @@ public class StandardSchemaTransform {
       inputJSON = JsonUtils.filepathToObject(inputJsonURL.getFile());
     }
 
-    Object transformedOutput = removeTildeFromKeys((ObjectNode) chainr.transform(inputJSON));
+    LinkedHashMap<String, Object> transformedOutput = (LinkedHashMap) chainr.transform(inputJSON);
+    removeTildeFromKeys(transformedOutput);
+    System.out.println("writing transformed json to " + args[0]);
     Path generatedFile = Paths.get(args[0]);
+    if (generatedFile.getParent().toFile().mkdirs()) {
+      System.out.println("schema-transform: created directories for " + args[0]);
+    }
     if (!generatedFile.toFile().createNewFile()) {
       if (generatedFile.toFile().delete()) {
         if (!generatedFile.toFile().createNewFile()) {
@@ -116,6 +103,6 @@ public class StandardSchemaTransform {
         return;
       }
     }
-    Files.writeString(generatedFile, JsonUtils.toJsonString(transformedOutput));
+    Files.writeString(generatedFile, JsonUtils.toPrettyJsonString(transformedOutput));
   }
 }

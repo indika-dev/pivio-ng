@@ -204,14 +204,8 @@
               <includePluginDependencies>true</includePluginDependencies>
               <arguments>
                 <argument>
-                  ${project.buildDir}/generated-sources/schema-transform/schema/pivio/steckbrief-schema.json</argument>
+                  ${project.build.directory}/generated-sources/schema-transform/schema/pivio/steckbrief-schema.json</argument>
               </arguments>
-              <systemProperties>
-                <systemProperty>
-                  <key>myproperty</key>
-                  <value>myvalue</value>
-                </systemProperty>
-              </systemProperties>
             </configuration>
             <dependencies>
               <dependency>
