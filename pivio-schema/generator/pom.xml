@@ -199,12 +199,14 @@
               </execution>
             </executions>
             <configuration>
-              <mainClass>io.pivio.schema.transform.StandardSchemaTransform</mainClass>
+              <mainClass>io.pivio.schema.transform.MappingToSchemaStandardTransform</mainClass>
               <includeProjectDependencies>true</includeProjectDependencies>
               <includePluginDependencies>true</includePluginDependencies>
               <arguments>
                 <argument>
-                  ${project.build.directory}/generated-sources/schema-transform/schema/pivio/steckbrief-schema.json</argument>
+                  ${project.basedir}/src/main/resources/schema/mappings/steckbrief/steckbrief-mapping.json</argument>
+                <argument>
+                  ${project.build.directory}/generated-sources/schema-transform/schema/steckbrief/steckbrief-schema.json</argument>
               </arguments>
             </configuration>
             <dependencies>
@@ -220,7 +222,10 @@
             <artifactId>jsonschema2pojo-maven-plugin</artifactId>
             <configuration>
               <sourcePaths>
-                <sourcePath>${project.basedir}/src/main/resources/schema</sourcePath>
+                <sourcePath>
+                  ${project.build.directory}/generated-sources/schema-transform/schema/steckbrief</sourcePath>
+                <sourcePath>${project.basedir}/src/main/resources/schema/java/changeset</sourcePath>
+                <sourcePath>${project.basedir}/src/main/resources/schema/java/pivio</sourcePath>
               </sourcePaths>
               <targetPackage>io.pivio.schema.generated</targetPackage>
               <useTitleAsClassname>true</useTitleAsClassname>

@@ -1,5 +1,6 @@
 package io.pivio.schema.transform;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,10 +21,11 @@ import com.bazaarvoice.jolt.JsonUtils;
 /**
  * applies the standard transformations to the included pivio schema
  */
-public class StandardSchemaTransform {
+public class MappingToSchemaStandardTransform {
 
-  private static final String SOURCE_TO_TRANSFORM_FILENAME = "mapping.json";
-  private static final String SOURCE_TO_TRANSFORM = "schema/pivio/" + SOURCE_TO_TRANSFORM_FILENAME;
+  private static final String SOURCE_TO_TRANSFORM_FILENAME = "steckbrief-mapping.json";
+  private static final String SOURCE_TO_TRANSFORM =
+      "schema/mappings/steckbrief/" + SOURCE_TO_TRANSFORM_FILENAME;
   private static final String TRANSFORMATION_RULES_SOURCE = "jolt/OSMappingTransform.json";
 
   private static void removeTildeFromKeys(LinkedHashMap<String, Object> node) {
@@ -37,7 +39,7 @@ public class StandardSchemaTransform {
 
   public static void main(String[] args) throws IOException {
     if (args == null || args.length == 0) {
-      System.err.println("schema-transform: path to generated file must be provided");
+      System.err.println("<path to source file> <path to target file>");
       return;
     }
 
@@ -46,8 +48,8 @@ public class StandardSchemaTransform {
     // path
     // JsonUtils.filepathToList : you can use an absolute path to specify the files
 
-    URL transformSpecURL =
-        StandardSchemaTransform.class.getClassLoader().getResource(TRANSFORMATION_RULES_SOURCE);
+    URL transformSpecURL = MappingToSchemaStandardTransform.class.getClassLoader()
+        .getResource(TRANSFORMATION_RULES_SOURCE);
     List<Object> chainrSpecJSON = new ArrayList<>();
     if (transformSpecURL != null && "jar".equals(transformSpecURL.getProtocol())) {
       ReadableByteChannel readableByteChannel = Channels.newChannel(transformSpecURL.openStream());
@@ -62,9 +64,32 @@ public class StandardSchemaTransform {
     }
 
     Chainr chainr = Chainr.fromSpec(chainrSpecJSON);
+    Object inputJSON = JsonUtils.filepathToObject(args[0]);
 
+    LinkedHashMap<String, Object> transformedOutput = (LinkedHashMap) chainr.transform(inputJSON);
+    removeTildeFromKeys(transformedOutput);
+    System.out.println("writing transformed json to " + args[1]);
+    Path generatedFile = Paths.get(args[1]);
+    if (generatedFile.getParent().toFile().mkdirs()) {
+      System.out.println("schema-transform: created directories for " + args[1]);
+    }
+    if (!generatedFile.toFile().createNewFile()) {
+      if (generatedFile.toFile().delete()) {
+        if (!generatedFile.toFile().createNewFile()) {
+          System.err.println("schema-transform: can't create file " + args[1]);
+          return;
+        }
+      } else {
+        System.err.println("schema-transform: can't delete existing file " + args[1]);
+        return;
+      }
+    }
+    Files.writeString(generatedFile, JsonUtils.toPrettyJsonString(transformedOutput));
+  }
+
+  private static Object getInputJSON(String[] args) throws IOException, FileNotFoundException {
     URL inputJsonURL =
-        StandardSchemaTransform.class.getClassLoader().getResource(SOURCE_TO_TRANSFORM);
+        MappingToSchemaStandardTransform.class.getClassLoader().getResource(SOURCE_TO_TRANSFORM);
     Object inputJSON = null;
     if (inputJsonURL != null && "jar".equals(inputJsonURL.getProtocol())) {
       Path tmpDirectory = Files.createTempDirectory("tmpTransform");
@@ -72,7 +97,7 @@ public class StandardSchemaTransform {
       byte[] buffer = new byte[8 * 1024];
       Path extractedFile = Paths.get(tmpDirectory.toString(), SOURCE_TO_TRANSFORM_FILENAME);
       try (
-          InputStream is = StandardSchemaTransform.class.getClassLoader()
+          InputStream is = MappingToSchemaStandardTransform.class.getClassLoader()
               .getResourceAsStream(SOURCE_TO_TRANSFORM);
           OutputStream os = new FileOutputStream(extractedFile.toFile());) {
         int bytesRead;
@@ -81,28 +106,9 @@ public class StandardSchemaTransform {
         }
       }
       inputJSON = JsonUtils.filepathToObject(extractedFile.toString());
-    } else {
+    } else if (inputJsonURL != null) {
       inputJSON = JsonUtils.filepathToObject(inputJsonURL.getFile());
     }
-
-    LinkedHashMap<String, Object> transformedOutput = (LinkedHashMap) chainr.transform(inputJSON);
-    removeTildeFromKeys(transformedOutput);
-    System.out.println("writing transformed json to " + args[0]);
-    Path generatedFile = Paths.get(args[0]);
-    if (generatedFile.getParent().toFile().mkdirs()) {
-      System.out.println("schema-transform: created directories for " + args[0]);
-    }
-    if (!generatedFile.toFile().createNewFile()) {
-      if (generatedFile.toFile().delete()) {
-        if (!generatedFile.toFile().createNewFile()) {
-          System.err.println("schema-transform: can't create file " + args[0]);
-          return;
-        }
-      } else {
-        System.err.println("schema-transform: can't delete existing file " + args[0]);
-        return;
-      }
-    }
-    Files.writeString(generatedFile, JsonUtils.toPrettyJsonString(transformedOutput));
+    return inputJSON;
   }
 }
