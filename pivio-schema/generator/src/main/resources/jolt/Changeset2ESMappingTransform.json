@@ -1,0 +1,86 @@
+[
+    {
+        "operation": "shift",
+        "spec": {
+            "properties": {
+                "document": "changeset.properties.document"
+            },
+            "definitions": {
+                "path": "changeset.properties.fields.properties.path",
+                "fields": {
+                    "properties": {
+                        "op": "changeset.properties.fields.properties.op",
+                        "value": "changeset.properties.fields.properties.value"
+                    }
+                }
+            }
+        }
+    },
+    {
+        "operation": "default",
+        "spec": {
+            "changeset": {
+                "properties": {
+                    "order": {
+                        "type": "long"
+                    },
+                    "timestamp": {
+                        "type": "date"
+                    },
+                    "fields": {
+                        "type": "nested",
+                        "include_in_all": true,
+                        "properties": {
+                            "path": {
+                                "analyzer": "simple"
+                            },
+                            "value": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "operation": "remove",
+        "spec": {
+            "properties": "",
+            "$id": "",
+            "$schema": "",
+            "title": "",
+            "type": "",
+            "changeset": {
+                "properties": {
+                    "document": {
+                        "$comment": "",
+                        "description": ""
+                    },
+                    "order": {
+                        "$comment": "",
+                        "description": ""
+                    },
+                    "timestamp": {
+                        "$comment": "",
+                        "description": ""
+                    },
+                    "fields": {
+                        "properties": {
+                            "path": {
+                                "description": ""
+                            },
+                            "op": {
+                                "description": "",
+                                "enum": ""
+                            },
+                            "value": {
+                                "description": ""
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+]

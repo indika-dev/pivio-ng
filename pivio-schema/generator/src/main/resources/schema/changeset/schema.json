@@ -47,6 +47,7 @@
           ]
         },
         "value": {
+          "type": "string",
           "description": "The value to add, replace or test."
         },
         "from": {
