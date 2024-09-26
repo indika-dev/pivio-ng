@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import com.bazaarvoice.jolt.Chainr;
 import com.bazaarvoice.jolt.JsonUtils;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * applies the standard transformations to the included pivio schema
@@ -37,6 +36,7 @@ public class JoltTransform {
 
     Chainr chainr = Chainr.fromSpec(findAndParseJoltSpec(TRANSFORMATION_RULES_SOURCE));
     LinkedHashMap<String, Object> inputJSON = findAndParseJsonFile(SOURCE_TO_TRANSFORM);
+    @SuppressWarnings({"rawtypes", "unchecked"})
     LinkedHashMap<String, Object> transformedOutput = (LinkedHashMap) chainr.transform(inputJSON);
     removeTildeFromKeys(transformedOutput);
 
@@ -82,6 +82,7 @@ public class JoltTransform {
     }
   }
 
+  @SuppressWarnings({"rawtypes", "unchecked"})
   private static LinkedHashMap<String, Object> findAndParseJsonFile(String pathToFile)
       throws IOException, FileNotFoundException {
     // How to access the test artifacts, i.e. JSON files
@@ -105,6 +106,7 @@ public class JoltTransform {
     }
   }
 
+  @SuppressWarnings({"rawtypes", "unchecked"})
   private static void removeTildeFromKeys(LinkedHashMap<String, Object> node) {
     List<String> keysWithTilde = node.keySet().stream().filter(key -> key.startsWith("~")).toList();
     keysWithTilde.stream().forEach(key -> {
