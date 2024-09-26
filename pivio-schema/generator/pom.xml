@@ -204,7 +204,7 @@
                     <argument>
                       ${project.basedir}/src/main/resources/schema/steckbrief/schema.json</argument>
                     <argument>
-                      ${project.basedir}/src/main/resources/jolt/Schema2ESMappingTransform.json</argument>
+                      ${project.basedir}/src/main/resources/jolt/Steckbrief2ESMappingTransform.json</argument>
                     <argument>
                       ${project.build.directory}/generated-sources/schema-transform/schema/mappings/steckbrief-mapping.json</argument>
                   </arguments>
@@ -224,7 +224,7 @@
                     <argument>
                       ${project.basedir}/src/main/resources/schema/changeset/schema.json</argument>
                     <argument>
-                      ${project.basedir}/src/main/resources/jolt/Schema2ESMappingTransform.json</argument>
+                      ${project.basedir}/src/main/resources/jolt/Changeset2ESMappingTransform.json</argument>
                     <argument>
                       ${project.build.directory}/generated-sources/schema-transform/schema/mappings/changeset-mapping.json</argument>
                   </arguments>
