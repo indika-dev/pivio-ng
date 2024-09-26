@@ -2,27 +2,23 @@ package io.pivio.schema.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-
 import io.pivio.schema.PivioValidator;
-import io.pivio.schema.generated.pivio.License;
-import io.pivio.schema.generated.pivio.License.FullName;
-import io.pivio.schema.generated.pivio.Links;
-import io.pivio.schema.generated.pivio.PivioDocument;
-import io.pivio.schema.generated.pivio.PivioObject;
-import io.pivio.schema.generated.pivio.SoftwareDependency;
+import io.pivio.schema.generated.License;
+import io.pivio.schema.generated.License.FullName;
+import io.pivio.schema.generated.Links;
+import io.pivio.schema.generated.PivioDocument;
+import io.pivio.schema.generated.PivioObject;
+import io.pivio.schema.generated.SoftwareDependency;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -38,8 +34,7 @@ public class TestPivioValidator {
   private Supplier<PivioObject> pivioGenerator = () -> new PivioObject();
 
   @BeforeEach
-  public void initialise() throws Throwable {
-  }
+  public void initialise() throws Throwable {}
 
   @Test
   public void testEmptyValidation() throws Exception {

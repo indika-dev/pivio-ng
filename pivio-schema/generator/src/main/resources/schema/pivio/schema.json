@@ -4,7 +4,7 @@
   "title": "PivioObject",
   "type": "object",
   "extends": {
-    "$ref": "../steckbrief/steckbrief-schema.json"
+    "$ref": "../steckbrief/schema.json"
   },
   "properties": {
     "data_format_version": {

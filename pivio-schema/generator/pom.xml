@@ -84,7 +84,7 @@
         <plugin>
           <groupId>org.jsonschema2pojo</groupId>
           <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-          <version>1.2.1</version>
+          <version>1.2.2</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -191,24 +191,46 @@
             <version>3.3.0</version>
             <executions>
               <execution>
-                <id>Schema Transformation</id>
+                <id>Schema Transformation for steckbrief</id>
                 <phase>generate-sources</phase>
                 <goals>
                   <goal>java</goal>
                 </goals>
+                <configuration>
+                  <mainClass>io.pivio.schema.transform.JoltTransform</mainClass>
+                  <includeProjectDependencies>true</includeProjectDependencies>
+                  <includePluginDependencies>true</includePluginDependencies>
+                  <arguments>
+                    <argument>
+                      ${project.basedir}/src/main/resources/schema/steckbrief/schema.json</argument>
+                    <argument>
+                      ${project.basedir}/src/main/resources/jolt/Schema2ESMappingTransform.json</argument>
+                    <argument>
+                      ${project.build.directory}/generated-sources/schema-transform/schema/mappings/steckbrief-mapping.json</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Schema Transformation for changeset</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+                <configuration>
+                  <mainClass>io.pivio.schema.transform.JoltTransform</mainClass>
+                  <includeProjectDependencies>true</includeProjectDependencies>
+                  <includePluginDependencies>true</includePluginDependencies>
+                  <arguments>
+                    <argument>
+                      ${project.basedir}/src/main/resources/schema/changeset/schema.json</argument>
+                    <argument>
+                      ${project.basedir}/src/main/resources/jolt/Schema2ESMappingTransform.json</argument>
+                    <argument>
+                      ${project.build.directory}/generated-sources/schema-transform/schema/mappings/changeset-mapping.json</argument>
+                  </arguments>
+                </configuration>
               </execution>
             </executions>
-            <configuration>
-              <mainClass>io.pivio.schema.transform.MappingToSchemaStandardTransform</mainClass>
-              <includeProjectDependencies>true</includeProjectDependencies>
-              <includePluginDependencies>true</includePluginDependencies>
-              <arguments>
-                <argument>
-                  ${project.basedir}/src/main/resources/schema/mappings/steckbrief/steckbrief-mapping.json</argument>
-                <argument>
-                  ${project.build.directory}/generated-sources/schema-transform/schema/steckbrief/steckbrief-schema.json</argument>
-              </arguments>
-            </configuration>
             <dependencies>
               <dependency>
                 <groupId>com.bazaarvoice.jolt</groupId>
@@ -222,10 +244,8 @@
             <artifactId>jsonschema2pojo-maven-plugin</artifactId>
             <configuration>
               <sourcePaths>
-                <sourcePath>
-                  ${project.build.directory}/generated-sources/schema-transform/schema/steckbrief</sourcePath>
-                <sourcePath>${project.basedir}/src/main/resources/schema/java/changeset</sourcePath>
-                <sourcePath>${project.basedir}/src/main/resources/schema/java/pivio</sourcePath>
+                <sourcePath>${project.basedir}/src/main/resources/schema/changeset</sourcePath>
+                <sourcePath>${project.basedir}/src/main/resources/schema/pivio</sourcePath>
               </sourcePaths>
               <targetPackage>io.pivio.schema.generated</targetPackage>
               <useTitleAsClassname>true</useTitleAsClassname>

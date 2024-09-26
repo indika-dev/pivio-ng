@@ -16,13 +16,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.pivio.schema.ChangesetValidator;
 import io.pivio.schema.PivioValidator;
-import io.pivio.schema.generated.changeset.Changeset;
-import io.pivio.schema.generated.pivio.License;
-import io.pivio.schema.generated.pivio.License.FullName;
-import io.pivio.schema.generated.pivio.Links;
-import io.pivio.schema.generated.pivio.PivioDocument;
-import io.pivio.schema.generated.pivio.PivioObject;
-import io.pivio.schema.generated.pivio.SoftwareDependency;
+import io.pivio.schema.generated.Changeset;
+import io.pivio.schema.generated.License;
+import io.pivio.schema.generated.License.FullName;
+import io.pivio.schema.generated.Links;
+import io.pivio.schema.generated.PivioDocument;
+import io.pivio.schema.generated.PivioObject;
+import io.pivio.schema.generated.SoftwareDependency;
 import lombok.extern.slf4j.Slf4j;
 
 /**
