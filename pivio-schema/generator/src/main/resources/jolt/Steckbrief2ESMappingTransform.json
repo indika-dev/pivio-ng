@@ -1,0 +1,150 @@
+[
+    {
+        "operation": "shift",
+        "spec": {
+            "properties": {
+                "type": "steckbrief.properties.type",
+                "name": "steckbrief.properties.name",
+                "short_name": "steckbrief.properties.short_name",
+                "owner": "steckbrief.properties.owner",
+                "description": "steckbrief.properties.description",
+                "vcsroot": "steckbrief.properties.vcsroot",
+                "links": "steckbrief.properties.links",
+                "software_dependencies": {
+                    "items": {
+                        "properties": {
+                            "name": "steckbrief.properties.software_dependencies.properties.name",
+                            "licenses": {
+                                "items": {
+                                    "properties": {
+                                        "key": "steckbrief.properties.software_dependencies.properties.licenses.properties.key",
+                                        "fullName": "steckbrief.properties.software_dependencies.properties.licenses.properties.fullName",
+                                        "url": "steckbrief.properties.software_dependencies.properties.licenses.properties.url"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "operation": "default",
+        "spec": {
+            "steckbrief": {
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "software_dependencies": {
+                        "type": "nested",
+                        "include_in_all": true,
+                        "properties": {
+                            "name": {
+                                "analyzer": "simple"
+                            },
+                            "licenses": {
+                                "type": "nested",
+                                "properties": {
+                                    "fullName": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "version": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "operation": "remove",
+        "spec": {
+            "properties": "",
+            "$id": "",
+            "$schema": "",
+            "title": "",
+            "type": "",
+            "steckbrief": {
+                "properties": {
+                    "id": {
+                        "$comment": ""
+                    },
+                    "name": {
+                        "$comment": ""
+                    },
+                    "type": {
+                        "enum": "",
+                        "default": "",
+                        "$comment": ""
+                    },
+                    "owner": {
+                        "$comment": ""
+                    },
+                    "description": {
+                        "$comment": ""
+                    },
+                    "short_name": {
+                        "$comment": ""
+                    },
+                    "vcsroot": {
+                        "$comment": ""
+                    },
+                    "links": {
+                        "properties": ""
+                    },
+                    "created": {
+                        "format": "",
+                        "readOnly": "",
+                        "$comment": ""
+                    },
+                    "lastUpload": {
+                        "format": "",
+                        "readOnly": "",
+                        "$comment": ""
+                    },
+                    "lastUpdate": {
+                        "format": "",
+                        "readOnly": "",
+                        "$comment": ""
+                    },
+                    "software_dependencies": {
+                        "$comment": "",
+                        "properties": {
+                            "$comment": "",
+                            "name": {
+                                "$comment": ""
+                            },
+                            "version": {
+                                "$comment": ""
+                            },
+                            "licenses": {
+                                "$comment": "",
+                                "properties": {
+                                    "$comment": "",
+                                    "key": {
+                                        "$comment": ""
+                                    },
+                                    "fullName": {
+                                        "enum": "",
+                                        "$comment": ""
+                                    },
+                                    "url": {
+                                        "$comment": "",
+                                        "format": ""
+                                    }
+                                },
+                                "required": ""
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ""
+        }
+    }
+]
